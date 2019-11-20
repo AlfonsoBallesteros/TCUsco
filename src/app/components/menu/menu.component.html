@@ -1,0 +1,35 @@
+<ion-menu side="start" menuId="primerMenu" contentId="principal">
+  <ion-header>
+    <ion-toolbar color="tertiary">
+      <ion-title>TCUsco</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle>
+         <ion-item routerLink="/perfil">
+          <ion-avatar>
+            <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" />
+            <ion-label class="nombre">{{nombre}}</ion-label>
+          </ion-avatar>
+        </ion-item>
+      </ion-menu-toggle>  
+     <ion-menu-toggle>
+        <ion-item routerLink="/perfil" class="redondo">
+          <ion-icon slot="start" name="person" color="tertiary"></ion-icon>
+          <ion-label>
+              Perfil
+          </ion-label>
+        </ion-item>
+     </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item routerLink="/login">
+          <ion-icon slot="start" name="log-out"></ion-icon>
+          <ion-label>
+            Cerrar session
+          </ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
