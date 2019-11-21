@@ -7,13 +7,19 @@ import { IonicModule } from '@ionic/angular';
 import { InicioPageRoutingModule } from './inicio-routing.module';
 
 import { InicioPage } from './inicio.page';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 
 @NgModule({
+  entryComponents:[
+    PopinfoComponent 
+  ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InicioPageRoutingModule
+    InicioPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [InicioPage]
 })

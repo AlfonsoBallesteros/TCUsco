@@ -3,12 +3,67 @@
       <ion-buttons slot="start">
         <ion-menu-button menu="primerMenu"></ion-menu-button>
       </ion-buttons>
+      <ion-buttons slot="end" routerLink="/usuarios">
+        <ion-button>
+          <ion-icon name="contacts" class="big-usuarios"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     <ion-title>TCUsco</ion-title>
   </ion-toolbar>
-  <!--<ion-icon name="contacts"></ion-icon>-->
 </ion-header>
 
 <ion-content>
-    <ion-button color="tertiary" routerLink="/perfil">Perfil</ion-button>
-    <ion-button color="tertiary" routerLink="/usuarios">Usuarios</ion-button>
+  <ion-card mode="ios">
+    <ion-card-header class="crear"> 
+      <ion-label color="dark">Crear Trayecto</ion-label>
+    </ion-card-header>
+    <ion-card-content class="content-creacion" (click)="presentAlert()">
+      <ion-buttons slot="start">
+          <img class="big-perfil-modal" [src]="perfil" />
+        <ion-label class="space">Añade un nuevo proyecto</ion-label>
+      </ion-buttons>
+    </ion-card-content>
+  </ion-card>
+  <ion-card mode="ios">
+     <ion-item>
+       <ion-buttons>
+          <img class="big-perfil" [src]="perfil" />
+          <ion-label class="space-post" color="tertiary">Alfonso Ballesteros</ion-label>
+       </ion-buttons>
+       <ion-buttons slot="end"> 
+          <ion-card-subtitle class="space-heart">5</ion-card-subtitle>
+          <ion-icon name="heart"class="big-more" color="danger"></ion-icon>
+          <ion-button (click)="mostrar($event)">
+            <ion-icon name="more" class="more" color="tertiary"></ion-icon>
+          </ion-button>
+       </ion-buttons>  
+     </ion-item>
+      <ion-item>
+        <ion-card-subtitle>Descripcion del trayecto</ion-card-subtitle>
+      </ion-item>
+      <ion-item>
+        <ion-buttons>
+          <ion-card-subtitle slot="start" color="tertiary">Lugar</ion-card-subtitle>
+        </ion-buttons> 
+        <ion-buttons slot="end">
+          <ion-card-subtitle color="tertiary">10 / 10 / 2019</ion-card-subtitle>
+        </ion-buttons> 
+      </ion-item>
+      <ion-item>
+        <ion-buttons (click)="like()"> 
+          <ion-button mode="ios">
+            <ion-icon name="heart-empty" class="big-more"></ion-icon>
+            <ion-card-subtitle class="letter">Me gusta</ion-card-subtitle>
+          </ion-button>
+            
+          </ion-buttons> 
+        <ion-buttons slot="end" (click)="coment()">
+            <ion-button mode="ios">
+              <ion-icon name="chatbubbles" class="big-more"></ion-icon>
+              <ion-card-subtitle class="letter">Comentar</ion-card-subtitle>
+            </ion-button>
+            
+        </ion-buttons> 
+      </ion-item>
+    </ion-card>
 </ion-content>
