@@ -4,8 +4,68 @@
       <ion-icon color="light" name="close"></ion-icon>  
     </ion-item>
 
-    <ion-card color="light">
-      <ion-label>{{pagina}}</ion-label>
+    <ion-card *ngIf="show_denuncias" color="light" mode="ios">
+      <ion-card-header>
+        <ion-card-title>{{pagina}}</ion-card-title>
+        <ion-item color="light">
+            <ion-buttons>
+               <img class="big-perfil" [src]="photo" />
+               <ion-label class="space-post" >{{persona}}</ion-label>
+            </ion-buttons>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item mode="ios" color="light" button (click)="select()">
+          <ion-label>Motivo: {{option}}</ion-label>
+          <ion-buttons slot="end">
+              Seleccione  
+          </ion-buttons>
+        </ion-item>
+        <ion-item color="light" mode="ios">
+          <ion-label position="stacked">Descripcion</ion-label>
+          <ion-textarea rows="5" maxLength="500" placeholder="Enter more information here..." required></ion-textarea>
+        </ion-item>
+        <ion-button (click)="save()" color="primary" class="boton" mode="ios">
+          Enviar
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="show_comment" mode="ios" class="screen">
+     
+        <ion-item (click)="close()">
+          <ion-icon color="dark" name="close"></ion-icon> 
+          <ion-card-title class="titulo">{{pagina}}s</ion-card-title>
+        </ion-item>
+      
+      <ion-list>
+        <ion-item>
+          <img class="comment" [src]="comment.photo"/>
+          <ion-item class="comment-modal" mode="ios"><!--
+
+              <ion-text class="write-comment"color="tertiary">{{comment.persona}}</ion-text>
+              <ion-text class="second-write-comment" >{{comment.Comment}}</ion-text>--->
+                <ion-row class="fila"> 
+                  <ion-col size="12" align-self-start>
+                    <ion-label class="write-comment"color="tertiary">{{comment.persona}}</ion-label>
+                  </ion-col>
+                  <ion-col size="12" align-self-end>
+                    <ion-label class="write-comment" >{{comment.Comment}}</ion-label>
+                  </ion-col>
+                </ion-row>
+          </ion-item>
+      </ion-item>
+      </ion-list>
     </ion-card>
 </ion-content>
+<ion-footer *ngIf="show_comment">
+      <ion-item class="input-comment" mode="ios">
+          <ion-textarea class="input" rows="1" placeholder="Comenta..." mode="ios"></ion-textarea>
+          <ion-buttons slot="end">
+            <ion-button (click)="save()">
+              <ion-icon class="size-icon" name="send" color="tertiary"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+      </ion-item>
+</ion-footer>
 

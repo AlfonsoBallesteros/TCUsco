@@ -37,7 +37,12 @@ export class InicioPage implements OnInit {
   async mostrar( event: any ){
     const pop = await this.popCrtl.create({
       component: PopinfoComponent,
-      componentProps:{Nombre: ['Denunciar'], page: ['/perfil']},
+      componentProps:{
+        Nombre: ['Denunciar'],
+        page: 'denuncias',
+        photo: this.post.photo_uri,
+        persona: this.post.nombre
+      },
       event: event,
       mode: 'ios',
     });
@@ -48,7 +53,8 @@ export class InicioPage implements OnInit {
     let modal = await this.modalCrtl.create({
       component: ModalPage, 
       componentProps:{
-        pagina: 'comentario'
+        pagina: 'comentario',
+        photo: this.post.photo_uri
       }
     });
   return await modal.present();

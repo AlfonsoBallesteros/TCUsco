@@ -1,5 +1,10 @@
-<ion-list>
-  <ion-item tappable *ngFor="let item of items" detail  button (click)="openImage()">
+<ion-list *ngIf="show_denuncias">
+  <ion-item tappable *ngFor="let item of items" detail  button (click)="openModal()">
     <ion-label>{{item}}</ion-label>
   </ion-item>
 </ion-list>   
+<ion-list *ngIf="show_motivo">
+    <ion-item tappable *ngFor="let item of items" detail  button (click)="motivo( item )">
+      <ion-label>{{item}}</ion-label>
+    </ion-item>
+  </ion-list> 

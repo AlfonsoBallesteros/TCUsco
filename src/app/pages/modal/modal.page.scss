@@ -23,3 +23,79 @@ ion-icon{
 .content {
     background: rgba(0, 0, 0, 0.85) !important;
 }       
+.space-post{
+    font-size: 90%;
+    margin-left: 20px;
+    white-space: pre-line!important;
+}
+.big-perfil{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.boton{
+    text-transform: none;
+}
+.screen{
+    margin: 0px auto;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    overflow: auto;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background: white;
+}
+.titulo{
+    margin-left: 20px;
+}
+
+.input-comment{
+    width: 95%;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    --background: #EAE1FB;
+    --border-color: #EAE1FB;
+    --border-style: solid;
+    --border-radius: 50px;
+    height: 50px;
+}
+.size-text{
+    height: 30px;
+}
+.size-icon{
+    font-size: 25px; 
+}
+.comment-modal{
+    width: 85%;
+    text-transform: none;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    --background: #EAE1FB;
+    --border-color: #EAE1FB;
+    --border-style: solid;
+    --border-radius: 50px;
+}
+.write-comment{
+    font-size: 12px;
+    margin-left: 2px;
+    white-space: pre-line!important;
+}
+.comment{   
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.fila{
+    padding: 5px;
+}
+.input{
+    font-size: 15px;
+}
