@@ -1,5 +1,5 @@
 <ion-list>
-  <ion-item *ngFor="let item of items">
-    <ion-label (click)="openImage()">{{item}}</ion-label>
+  <ion-item tappable *ngFor="let item of items" detail  button (click)="openImage()">
+    <ion-label>{{item}}</ion-label>
   </ion-item>
-</ion-list> 
+</ion-list>   

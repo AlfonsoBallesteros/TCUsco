@@ -13,13 +13,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-card mode="ios">
+  <ion-card mode="ios" button>
     <ion-card-header class="crear"> 
       <ion-label color="dark">Crear Trayecto</ion-label>
     </ion-card-header>
-    <ion-card-content class="content-creacion" (click)="presentAlert()">
+    <ion-card-content class="content-creacion" (click)="modalCreate()">
       <ion-buttons slot="start">
-          <img class="big-perfil-modal" [src]="perfil" />
+          <img class="big-perfil-modal" [src]="post.photo_uri" />
         <ion-label class="space">Añade un nuevo proyecto</ion-label>
       </ion-buttons>
     </ion-card-content>
@@ -27,11 +27,11 @@
   <ion-card mode="ios">
      <ion-item>
        <ion-buttons>
-          <img class="big-perfil" [src]="perfil" />
-          <ion-label class="space-post" color="tertiary">Alfonso Ballesteros</ion-label>
+          <img class="big-perfil" [src]="post.photo_uri" />
+          <ion-label class="space-post" color="tertiary">{{post.nombre}}</ion-label>
        </ion-buttons>
        <ion-buttons slot="end"> 
-          <ion-card-subtitle class="space-heart">5</ion-card-subtitle>
+          <ion-card-subtitle class="space-heart">{{post.like}}</ion-card-subtitle>
           <ion-icon name="heart"class="big-more" color="danger"></ion-icon>
           <ion-button (click)="mostrar($event)">
             <ion-icon name="more" class="more" color="tertiary"></ion-icon>
@@ -39,31 +39,37 @@
        </ion-buttons>  
      </ion-item>
       <ion-item>
-        <ion-card-subtitle>Descripcion del trayecto</ion-card-subtitle>
+        <ion-card-subtitle>{{post.descripcion}}</ion-card-subtitle>
       </ion-item>
       <ion-item>
         <ion-buttons>
-          <ion-card-subtitle slot="start" color="tertiary">Lugar</ion-card-subtitle>
-        </ion-buttons> 
+          <ion-card-subtitle slot="start" color="tertiary">{{post.lugar}}</ion-card-subtitle>
+        </ion-buttons>
         <ion-buttons slot="end">
-          <ion-card-subtitle color="tertiary">10 / 10 / 2019</ion-card-subtitle>
+          <ion-card-subtitle color="tertiary">{{post.fecha}}</ion-card-subtitle>
         </ion-buttons> 
       </ion-item>
       <ion-item>
-        <ion-buttons (click)="like()"> 
-          <ion-button mode="ios">
-            <ion-icon name="heart-empty" class="big-more"></ion-icon>
+        <ion-buttons> 
+          <ion-button mode="ios" (click)="like( $event )">
+            <ion-icon name="heart" class="big-more" [color]="colorHeart"></ion-icon>
             <ion-card-subtitle class="letter">Me gusta</ion-card-subtitle>
           </ion-button>
             
           </ion-buttons> 
         <ion-buttons slot="end" (click)="coment()">
             <ion-button mode="ios">
-              <ion-icon name="chatbubbles" class="big-more"></ion-icon>
+              <ion-icon name="chatbubbles" class="big-more" color="medium"></ion-icon>
               <ion-card-subtitle class="letter">Comentar</ion-card-subtitle>
-            </ion-button>
-            
+            </ion-button> 
         </ion-buttons> 
+      </ion-item>
+      <ion-card-subtitle color="medium" class="coment">{{post.comentarios}} comentarios</ion-card-subtitle>
+      <ion-item *ngIf="show" (click)="coment()">
+          <img class="comment" [src]="post.photo_uri"/>
+          <ion-item class="comment-modal" mode="ios" button>
+            <ion-card-subtitle class="write-comment" color="">Comenta...</ion-card-subtitle>
+          </ion-item>
       </ion-item>
     </ion-card>
 </ion-content>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController, ModalController } from '@ionic/angular';
-import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { ModalPage } from 'src/app/pages/modal/modal.page';
 @Component({
   selector: 'app-popinfo',
   templateUrl: './popinfo.component.html',
@@ -26,9 +26,9 @@ export class PopinfoComponent implements OnInit {
   async openImage(){
     this.popCrtl.dismiss();
     let modal = await this.modalCtrl.create({
-      component: PreviewModalComponent, 
+      component: ModalPage, 
       componentProps:{
-        img: this.items
+        pagina: 'Denuncias'
       }
     });
   return await modal.present();

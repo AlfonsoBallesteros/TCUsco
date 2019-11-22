@@ -2,15 +2,15 @@
     font-size: 30px; //Preferred size here
 }
 .big-perfil{
-    width: 23%;
-    height: 23%;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     margin-top: 5%;
     margin-bottom: 5%;
 }
 .big-perfil-modal{
-    width: 14%;
-    height: 14%;
+    width: 40px;
+    height: 40px;
     border-radius: 50%; 
 }
 .big-more{
@@ -41,4 +41,27 @@
 .letter{
     text-transform: none;
     margin-left: 10px;
+}
+.comment{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.comment-modal{
+    width: 85%;
+    text-transform: none;
+    margin-left: 10px;
+    --background: #EAE1FB;
+    --border-color: #EAE1FB;
+    --border-style: solid;
+    --border-radius: 50px;
+}
+.write-comment{
+    font-size: 12px;
+}
+.coment{
+    margin-left: 70%;
+    font-size: 12px;
 }

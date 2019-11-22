@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'usuarios',
     loadChildren: () => import('./pages/usuarios/usuarios.module').then( m => m.UsuariosPageModule)
+  },
+  {
+    path: 'modal',
+    loadChildren: () => import('./pages/modal/modal.module').then( m => m.ModalPageModule)
   }
 ];
 
