@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { ModalController, NavParams, PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 
@@ -8,10 +8,13 @@ import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
   styleUrls: ['./modal.page.scss'],
 })
 export class ModalPage implements OnInit {
+
+  @ViewChild('comment', {static: false}) comentar;
+
   comment = {
-    'persona': ['andres fernadno'],
+    'persona': ['Alfonso'],
     'photo': [],
-    'Comment': ['La Revolución de Febrero de 1917, que provocó la caída del Imperio ruso, tuvo como sucesor al Gobierno provisional ruso, que fue derrocado por la Revolución de Octubre, estableciéndose el Gobierno de los bolcheviques denominado Sovnarkom. A continuación, se desencadenó la guerra civil rusa que fue ganada por el nuevo régimen soviético. En diciembre de 1922 fue creada la Unión Soviética con la fusión de la República Socialista Federativa Soviética de Rusia, la República Federal Socialista Soviética de Transcaucasia, la República Socialista Soviética de Ucrania y la República Socialista Soviética de Bielorrusia. ']
+    'Comment': ['Hola amor']
   };
   pagina: string;
   show_denuncias: boolean = false;
@@ -33,6 +36,12 @@ export class ModalPage implements OnInit {
       this.show_denuncias = true;
     }else if(this.pagina == 'comentario'){
       this.show_comment = true;
+    }
+  }
+
+  ngAfterViewChecked() {
+    if(document.body.contains(document.getElementById('comment'))){
+      this.comentar.setFocus();
     }
   }
 

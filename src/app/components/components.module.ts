@@ -8,6 +8,7 @@ import { PreviewModalComponent } from './preview-modal/preview-modal.component';
 import { PopinfoComponent } from './popinfo/popinfo.component';
 
 
+
 @NgModule({
   entryComponents:[
     PreviewModalComponent
@@ -27,7 +28,7 @@ import { PopinfoComponent } from './popinfo/popinfo.component';
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule,
+    RouterModule
   ]
 })
 export class ComponentsModule { }

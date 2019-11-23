@@ -1,3 +1,4 @@
+/* Modal de denuncias*/
 ion-content{
     --background: transparent !important;
 }
@@ -38,6 +39,7 @@ ion-icon{
 .boton{
     text-transform: none;
 }
+/* Modal de comentarios*/
 .screen{
     margin: 0px auto;
     width: 100%;
@@ -98,4 +100,9 @@ ion-icon{
 }
 .input{
     font-size: 15px;
+}
+.second-write-comment{
+    font-size: 12px;
+    margin-top: 0px;
+    white-space: pre-line!important;
 }

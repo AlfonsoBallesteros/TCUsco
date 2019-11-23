@@ -3,7 +3,7 @@
     <ion-item class="cerrar" (click)="close()">
       <ion-icon color="light" name="close"></ion-icon>  
     </ion-item>
-
+  <!--Modal de denuncias-->
     <ion-card *ngIf="show_denuncias" color="light" mode="ios">
       <ion-card-header>
         <ion-card-title>{{pagina}}</ion-card-title>
@@ -30,7 +30,7 @@
         </ion-button>
       </ion-card-content>
     </ion-card>
-
+    <!--Modal de comentarios-->
     <ion-card *ngIf="show_comment" mode="ios" class="screen">
      
         <ion-item (click)="close()">
@@ -46,11 +46,9 @@
               <ion-text class="write-comment"color="tertiary">{{comment.persona}}</ion-text>
               <ion-text class="second-write-comment" >{{comment.Comment}}</ion-text>--->
                 <ion-row class="fila"> 
-                  <ion-col size="12" align-self-start>
+                  <ion-col size="12" class="ion-align-self-start">
                     <ion-label class="write-comment"color="tertiary">{{comment.persona}}</ion-label>
-                  </ion-col>
-                  <ion-col size="12" align-self-end>
-                    <ion-label class="write-comment" >{{comment.Comment}}</ion-label>
+                    <ion-label class="second-write-comment" >{{comment.Comment}}</ion-label>
                   </ion-col>
                 </ion-row>
           </ion-item>
@@ -58,9 +56,10 @@
       </ion-list>
     </ion-card>
 </ion-content>
+<!--Modal de comentarios-->
 <ion-footer *ngIf="show_comment">
       <ion-item class="input-comment" mode="ios">
-          <ion-textarea class="input" rows="1" placeholder="Comenta..." mode="ios"></ion-textarea>
+          <ion-textarea class="input input-has-focus" rows="1" placeholder="Comenta..." mode="ios" id="comment" #comment></ion-textarea>
           <ion-buttons slot="end">
             <ion-button (click)="save()">
               <ion-icon class="size-icon" name="send" color="tertiary"></ion-icon>
