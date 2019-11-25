@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, PopoverController, ModalController } from '@ionic/angular';
+import { AlertController, PopoverController, ModalController, NavParams} from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-modal.component';
 import { ModalPage } from '../modal/modal.page';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inicio', 
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
+  
 })
 export class InicioPage implements OnInit {
   
@@ -20,11 +22,13 @@ export class InicioPage implements OnInit {
     'like': 8,
     'comentarios': 5
   }
+  public nav = NavParams;
+  lugar: string;
   colorHeart: string = "medium";  
   count: number = 1;  
-
+  option: string;
   show: boolean=false;
-  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController) { }
+  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private actRoute: ActivatedRoute) { }
 
   ngOnInit() {
     if(this.post.comentarios > 0){
@@ -77,9 +81,16 @@ export class InicioPage implements OnInit {
     let modal = await this.modalCrtl.create({
       component: ModalPage, 
       componentProps:{
-        pagina: 'post' 
+        pagina: 'post',
+        photo: this.post.photo_uri,
+        persona: this.post.nombre
       }
     });
+  modal.onDidDismiss().then((data) => {
+    this.lugar = data.data.location;
+    console.log(this.lugar)
+  });
   return await modal.present();
+  
   }
 }

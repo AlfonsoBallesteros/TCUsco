@@ -16,14 +16,14 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item mode="ios" color="light" button (click)="select()">
-          <ion-label>Motivo: {{option}}</ion-label>
+          <ion-label>Motivo:</ion-label>
           <ion-buttons slot="end">
-              Seleccione  
+            {{option}} 
           </ion-buttons>
         </ion-item>
         <ion-item color="light" mode="ios">
-          <ion-label position="stacked">Descripcion</ion-label>
-          <ion-textarea rows="5" maxLength="500" placeholder="Enter more information here..." required></ion-textarea>
+          <ion-label position="stacked" class="descripcion">Descripcion</ion-label>
+          <ion-textarea class="input-descripcion" rows="5" maxLength="500" placeholder="Describe lo que te paso aqui..." required></ion-textarea>
         </ion-item>
         <ion-button (click)="save()" color="primary" class="boton" mode="ios">
           Enviar
@@ -55,11 +55,40 @@
       </ion-item>
       </ion-list>
     </ion-card>
+
+    <ion-card *ngIf="show_post" color="light" mode="ios">
+      <ion-card-header class="crear">
+          <ion-card-title>Crear Trayecto</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="card-content-perfil">
+        <ion-row>
+            <ion-col size="2">
+                <img class="perfil" [src]="photo"/>
+            </ion-col>
+            <ion-col class="col-textarea" size="10">
+              <ion-label class="label-post">{{persona}}</ion-label>
+              <ion-button class="boton-lugar"  (ionChange)="initMap()" (click)="places()">
+                <ion-icon slot="start" class="color-boton-icon" name="globe"></ion-icon>
+                <ion-text class="color-boton">
+                  {{lugar}}
+                </ion-text>
+                <ion-icon slot="end" class="color-boton-icon" name="arrow-dropdown"></ion-icon>
+              </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-textarea class="text-post" rows="5" maxLength="500" placeholder="Crea un Trayecto..." required></ion-textarea>
+      </ion-card-content>
+      <ion-button (click)="locacion()" color="primary" class="boton-post" mode="ios" expand="full">
+        Enviar
+      </ion-button>
+      <div #map id="map"></div>
+    </ion-card>
+
 </ion-content>
 <!--Modal de comentarios-->
 <ion-footer *ngIf="show_comment">
       <ion-item class="input-comment" mode="ios">
-          <ion-textarea class="input input-has-focus" rows="1" placeholder="Comenta..." mode="ios" id="comment" #comment></ion-textarea>
+          <ion-textarea class="input" rows="1" placeholder="Comenta..." mode="ios" id="comment" #comment></ion-textarea>
           <ion-buttons slot="end">
             <ion-button (click)="save()">
               <ion-icon class="size-icon" name="send" color="tertiary"></ion-icon>

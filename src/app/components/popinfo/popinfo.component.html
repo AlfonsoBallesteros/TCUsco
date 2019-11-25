@@ -7,4 +7,9 @@
     <ion-item tappable *ngFor="let item of items" detail  button (click)="motivo( item )">
       <ion-label>{{item}}</ion-label>
     </ion-item>
-  </ion-list> 
+</ion-list> 
+<ion-list *ngIf="show_places">
+    <ion-item tappable *ngFor="let item of items" detail  button (click)="places( item )">
+      <ion-label>{{item}}</ion-label>
+    </ion-item>
+</ion-list> 

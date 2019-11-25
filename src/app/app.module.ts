@@ -12,6 +12,9 @@ import { ComponentsModule } from './components/components.module';
 
 import { HttpClientModule} from '@angular/common/http';
 
+import { Network } from '@ionic-native/network/ngx'
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -25,7 +28,10 @@ import { HttpClientModule} from '@angular/common/http';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    Network,
+    Geolocation,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+
   ],
   bootstrap: [AppComponent]
 })

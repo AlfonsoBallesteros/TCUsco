@@ -39,6 +39,12 @@ ion-icon{
 .boton{
     text-transform: none;
 }
+.descripcion{
+    font-size: 25px;
+}
+.input-descripcion{
+    font-size: 12pt;
+}
 /* Modal de comentarios*/
 .screen{
     margin: 0px auto;
@@ -105,4 +111,67 @@ ion-icon{
     font-size: 12px;
     margin-top: 0px;
     white-space: pre-line!important;
+}
+
+/* Modal post*/
+.crear{
+    background: rgb(234, 225, 251);
+    padding: 3%;
+}
+.label-post{
+    margin-right: 50px; 
+    margin-top: 30px; 
+    margin-bottom: 0px;
+    font-size: 15px;
+}
+.boton-lugar{
+    width: 260px;
+    height: 25px;
+    text-transform: none;
+    --background: #f4f5f8 !important;;
+    --box-shadow: none;
+    --border-style: solid;
+    --border-color: #989aa2;
+    --border-width: 1px;
+    --border-radius: 8.5px;
+    margin: 0px;
+    --padding-end: 0px;
+    --padding-start: 0px;
+}
+.color-boton{
+    color:  grey;
+    padding: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+    white-space: pre-line!important;
+}
+.color-boton-icon{
+    color:  grey;
+    width: 18px;
+    height: 18px;
+    padding: 0px;
+    margin: 0px;
+}
+.perfil{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-top: 5%;
+}
+.card-content-perfil{
+    padding-bottom: 0px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+.text-post{
+    font-size: 15pt;
+    padding-top: 0px;
+    margin-top: 0px;
+}
+.col-textarea{
+    padding-bottom: 0px;
+}
+.boton-post{
+    text-transform: none;
+    margin: 0px;
 }

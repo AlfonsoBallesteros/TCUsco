@@ -15,6 +15,7 @@ export class PopinfoComponent implements OnInit {
 
   show_denuncias: boolean=false;
   show_motivo: boolean=false;
+  show_places: boolean=false;
  
   constructor(private navParams: NavParams, private popCrtl: PopoverController, private modalCtrl: ModalController) { }
 
@@ -29,6 +30,9 @@ export class PopinfoComponent implements OnInit {
       this.show_denuncias = true;
     }else if(this.page == 'motivo'){
       this.show_motivo = true;
+    }else if(this.page == "places"){
+      this.show_places = true;
+      console.log(this.items);
     }
   }
 
@@ -51,4 +55,9 @@ export class PopinfoComponent implements OnInit {
   return await modal.present();
 }
 
+  places( valor: number){
+    this.popCrtl.dismiss({
+      item: valor
+    });
+  }
 }

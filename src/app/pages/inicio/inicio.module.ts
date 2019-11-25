@@ -23,7 +23,7 @@ import { ModalPageModule } from '../modal/modal.module';
     IonicModule,
     InicioPageRoutingModule,
     ComponentsModule,
-    ModalPageModule
+    ModalPageModule,
   ],
   declarations: [InicioPage]
 })
