@@ -46,6 +46,7 @@ ion-icon{
     font-size: 12pt;
 }
 /* Modal de comentarios*/
+
 .screen{
     margin: 0px auto;
     width: 100%;
@@ -61,8 +62,12 @@ ion-icon{
 }
 .titulo{
     margin-left: 20px;
+    text-transform: none;
 }
-
+.max{
+    max-height: 510px;
+    overflow-y: scroll;
+}
 .input-comment{
     width: 95%;
     margin-left: 10px;

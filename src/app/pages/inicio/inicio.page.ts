@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, PopoverController, ModalController, NavParams} from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController, PopoverController, ModalController, NavParams, IonInfiniteScroll} from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-modal.component';
 import { ModalPage } from '../modal/modal.page';
@@ -13,6 +13,12 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class InicioPage implements OnInit {
   
+  @ViewChild(IonInfiniteScroll, {static: false}) infinite;
+
+  data: any[];
+  page = 0;
+  maximumPages = 3;
+
   post = {
     'photo_uri': "https://firebasestorage.googleapis.com/v0/b/tcusco-77d95.appspot.com/o/img_perfil%2Fperfil2.jpeg?alt=media&token=526bc9ec-5416-4002-8a99-19af909615c4",
     'nombre': 'Alfonso Ballesteros',
@@ -36,6 +42,7 @@ export class InicioPage implements OnInit {
     }else{
       this.show = false;
     }
+    this.loadUsers();
   }
 
   async mostrar( event: any ){
@@ -55,7 +62,8 @@ export class InicioPage implements OnInit {
   }
   async coment() {
     let modal = await this.modalCrtl.create({
-      component: ModalPage, 
+      component: ModalPage,
+      mode: 'ios',
       componentProps:{
         pagina: 'comentario',
         photo: this.post.photo_uri
@@ -92,5 +100,39 @@ export class InicioPage implements OnInit {
   });
   return await modal.present();
   
+  }
+
+  loadUsers(event?){
+    this.data = Array(10);
+    /*
+    if (event) {
+      event.target.complete();
+    }
+    */
+  }
+
+  loadData(event){
+    /*
+    this.page++;
+    this.loadUsers(event);
+ 
+    if (this.page === this.maximumPages) {
+      this.infinite.disabled = true;
+    }
+    */
+    setTimeout(() =>{
+      /*
+      if(this.data.length > 10){
+        event.target.complete();
+        this.infinite.disabled = true;
+        return;
+      }
+      //const nuevo = Array(5);
+      //this.data.push(...nuevo);
+       */
+      event.target.complete();
+      //this.infinite.disabled = true;
+     
+    }, 500)
   }
 }

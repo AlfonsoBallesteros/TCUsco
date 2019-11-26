@@ -9,10 +9,13 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
   styleUrls: ['./modal.page.scss'],
 })
 export class ModalPage implements OnInit {
-
+  
   @ViewChild('comment', {static: false}) comentar;
+  /*
   @ViewChild('map', {static: false}) mapElement: ElementRef;
   @ViewChild('pleaseConnect',{static: false}) pleaseConnect: ElementRef;
+*/
+  data: any[] = Array(20);
 
   lugares: Array<string> = [];  
   lugar: string = 'Lugares'
@@ -120,7 +123,6 @@ export class ModalPage implements OnInit {
       
   }
 }
-
 
 
 
