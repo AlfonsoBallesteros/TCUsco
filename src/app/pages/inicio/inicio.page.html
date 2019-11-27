@@ -23,7 +23,10 @@
       </ion-buttons>
     </ion-card-content>
   </ion-card>
-  <ion-card mode="ios">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  <ion-card mode="ios" *ngFor="let item of data">
      <ion-item>
        <ion-buttons>
           <img class="big-perfil" [src]="post.photo_uri" />
@@ -69,6 +72,41 @@
           <ion-item class="comment-modal" mode="ios" button>
             <ion-card-subtitle class="write-comment" color="">Comenta...</ion-card-subtitle>
           </ion-item>
+      </ion-item>
+    </ion-card>
+
+    <ion-card *ngIf="show_texto">
+      <ion-item>
+       <ion-buttons>
+          <ion-avatar class="big-perfil"  slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-avatar>
+       </ion-buttons>
+       <ion-skeleton-text class="space-post" animated style="width: 120px; height: 15px"></ion-skeleton-text>
+       <ion-buttons slot="end">
+          <ion-skeleton-text class="space-heart" animated style="width: 10px; height: 10px"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 10px; height: 10px"></ion-skeleton-text>
+          <ion-button>
+            <ion-skeleton-text animated style="width: 5px; height: 20px"></ion-skeleton-text>
+          </ion-button>
+       </ion-buttons>  
+     </ion-item>
+     <ion-item>
+        <ion-skeleton-text animated style="width: 300px; height: 20px"></ion-skeleton-text>
+     </ion-item>
+      <ion-item>
+          <ion-skeleton-text animated style="width: 50px; height: 15px"></ion-skeleton-text>
+          <ion-skeleton-text slot="end" animated style="width: 50px; height: 15px"></ion-skeleton-text>
+      </ion-item>
+      <ion-item>
+        <ion-skeleton-text slot="start" animated style="width: 80px; height: 20px"></ion-skeleton-text>
+        <ion-skeleton-text slot="end" animated style="width: 80px; height: 20px"></ion-skeleton-text>
+      </ion-item>
+      <ion-item>
+         <ion-avatar class="comment">
+            <ion-skeleton-text animated></ion-skeleton-text>
+         </ion-avatar>
+          <ion-skeleton-text animated class="comment-modal" style="height: 30px"></ion-skeleton-text>
       </ion-item>
     </ion-card>
 <!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">

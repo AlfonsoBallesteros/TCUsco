@@ -4,3 +4,38 @@ ion-toolbar{
     border-color: #7044ff;
     border-radius: 20px;
 }
+.big-perfil-modal{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+}
+.space{
+    font-size: 100%;
+    margin-left: 20px;
+    white-space: pre-line!important;
+}
+.space-heart{
+    margin-right: 2px;
+}   
+.big-more{
+    font-size: 25px;
+}
+.more{
+    font-size: 30px;
+}
+.space-item{
+    margin-top: 15px;
+}
+ion-searchbar{
+    padding-bottom: 0px;
+    padding-left: 0px;
+    --background: white;
+}
+.fillter{
+    font-size: 40px;
+}
+.info{
+    font-size: 10px;
+    white-space: pre-line!important;
+    font-style: italic;
+}

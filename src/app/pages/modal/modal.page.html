@@ -31,7 +31,10 @@
       </ion-card-content>
     </ion-card>
     <!--Modal de comentarios-->
-    <ion-card *ngIf="show_comment" mode="ios" class="screen">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <!--<ion-card *ngIf="show_comment" mode="ios" class="screen">
          <ion-toolbar>
             <ion-buttons slot="start">
                 <ion-button (click)="close()">
@@ -44,10 +47,10 @@
           <ion-list class="max" lines="none">  
               <ion-item *ngFor="let item of data">
                 <img class="comment" [src]="comment.photo"/>
-                <ion-item class="comment-modal" mode="ios"><!--
+                <ion-item class="comment-modal" mode="ios">
       
                     <ion-text class="write-comment"color="tertiary">{{comment.persona}}</ion-text>
-                    <ion-text class="second-write-comment" >{{comment.Comment}}</ion-text>--->
+                    <ion-text class="second-write-comment" >{{comment.Comment}}</ion-text>
                       <ion-row class="fila"> 
                         <ion-col size="12" class="ion-align-self-start">
                           <ion-label class="write-comment"color="tertiary">{{comment.persona}}</ion-label>
@@ -57,8 +60,34 @@
                 </ion-item>
               </ion-item>
             </ion-list>
-      
-    </ion-card>
+    </ion-card>-->
+    <ion-card *ngIf="show_comment" mode="ios" class="screen">
+        <ion-toolbar>
+           <ion-buttons slot="start">
+               <ion-button (click)="close()">
+                   <ion-icon color="dark" name="arrow-back"></ion-icon> 
+                   <ion-card-title class="titulo">{{pagina}}s</ion-card-title>
+               </ion-button>
+           </ion-buttons>
+        </ion-toolbar>
+     
+         <ion-list class="max" lines="none">  
+             <ion-item *ngFor="let item of data">
+               <img class="comment" [src]="comment.photo"/>
+               <ion-item class="comment-modal" mode="ios"><!--
+     
+                   <ion-text class="write-comment"color="tertiary">{{comment.persona}}</ion-text>
+                   <ion-text class="second-write-comment" >{{comment.Comment}}</ion-text>--->
+                     <ion-row class="fila"> 
+                       <ion-col size="12" class="ion-align-self-start">
+                         <ion-label class="write-comment"color="tertiary">{{comment.persona}}</ion-label>
+                         <ion-label class="second-write-comment" >{{comment.Comment}}</ion-label>
+                       </ion-col>
+                     </ion-row>
+               </ion-item>
+             </ion-item>
+           </ion-list>
+  </ion-card>
 <!---Crear Trayecto-->
     <ion-card *ngIf="show_post" color="light" mode="ios">
       <ion-card-header class="crear">

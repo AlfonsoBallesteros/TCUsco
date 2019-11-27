@@ -122,6 +122,16 @@ export class ModalPage implements OnInit {
   
       
   }
+
+  doRefresh(event: any){
+    setTimeout(() =>{
+      this.go();
+      event.target.complete();
+    }, 1000)
+  }
+  go(){
+    this.data.length++;
+  }
 }
 
 

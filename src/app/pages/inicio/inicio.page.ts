@@ -34,6 +34,7 @@ export class InicioPage implements OnInit {
   count: number = 1;  
   option: string;
   show: boolean=false;
+  show_texto = true;
   constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private actRoute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -42,7 +43,21 @@ export class InicioPage implements OnInit {
     }else{
       this.show = false;
     }
-    this.loadUsers();
+    //this.loadUsers();
+    setTimeout(() =>{
+      this.show_texto = false;
+      this.data = Array(2);
+    }, 2000)
+  }
+
+  doRefresh(event: any){
+    setTimeout(() =>{
+      this.go();
+      event.target.complete();
+    }, 10000)
+  }
+  go(){
+    this.data.length++;
   }
 
   async mostrar( event: any ){
