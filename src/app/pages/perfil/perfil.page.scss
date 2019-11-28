@@ -1,0 +1,90 @@
+.img-perfil{
+    width: 150%;
+    height: 150%
+}
+ion-avatar {
+    margin: auto;
+    width: 100px;
+    height: auto;
+}
+.avatar{
+    padding: 0%;
+}
+.col-first{
+    padding: 0px;
+    margin-top: 2%; 
+}
+.input-first{
+    padding: 0% 0% 0% 0%;
+    margin-right: 2%;
+    --padding-start: 0%;
+    margin-top: 5%;
+}
+.text-first{
+    --padding-top: 0%;
+    margin-bottom: 4%;
+    --padding-bottom: 0%;  
+    font-size: 15px;
+}
+.text-second{
+    --padding-top: 0%;
+    margin-bottom: 3%;
+    --padding-bottom: 0%;  
+    font-size: 15px;
+}
+ion-fab{
+    top: 9%!important;
+    left: 18%!important;
+}
+ion-fab-button{
+    width: 40px!important;
+    height: 40px!important;
+}
+.card-input{
+    margin-top: 0%;
+}
+.col-second{
+    padding-right: 16%;
+}
+.item-icon-edit{
+    height: 40px;
+    --inner-padding-end: 4px;
+}
+.content-input{
+    padding-top: 0%;
+}
+.icon-edit{
+    font-size: 22px;
+}
+ion-select {
+    color: black!important;
+    opacity: 1;
+    --padding-top: 0%;
+    --padding-start: 0%;
+    --padding-bottom: 0%;
+    display: flex;
+}
+ion-datetime{
+    color: #222428!important;
+}
+.comment-modal{
+    width: 94%;
+    text-transform: none;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    --background: #EAE1FB;
+    --border-color: #EAE1FB;
+    --border-style: solid;
+    --border-radius: 50px;
+}
+.second-write-comment{
+    font-size: 12px;
+    margin-top: 0px;
+    white-space: pre-line!important;
+}
+.boton-denuncias{
+    margin: 0px;
+    width: 100%!important;
+    height: 55px!important;
+}

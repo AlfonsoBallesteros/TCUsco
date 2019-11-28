@@ -14,6 +14,8 @@ import { HttpClientModule} from '@angular/common/http';
 
 import { Network } from '@ionic-native/network/ngx'
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +25,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     IonicModule.forRoot(), 
     AppRoutingModule, 
     ComponentsModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     StatusBar,

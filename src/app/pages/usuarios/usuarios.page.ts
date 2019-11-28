@@ -26,11 +26,11 @@ export class UsuariosPage implements OnInit {
   ngOnInit() {
     setTimeout(() =>{
       this.show_texto = false;
-      this.carrera = [ 'Ingenieria de software' , 'Ingenieria de software', 'Lic. Matematicas'];
-    }, 2000)
+      this.carrera = [ 'Ingenieria de software' , 'Ingenieria de petroleos', 'Lic. Matematicas'];
+    }, 1000)
   }
 
-  async denuncia(){
+  async denuncia(event: any){
     const pop = await this.popCtrl.create({
       component: PopinfoComponent,
       componentProps:{
@@ -50,7 +50,7 @@ export class UsuariosPage implements OnInit {
     setTimeout(() =>{
       this.go();
       event.target.complete();
-    }, 1500)
+    }, 1000)
   }
 
   go(){

@@ -47,7 +47,7 @@ export class InicioPage implements OnInit {
     setTimeout(() =>{
       this.show_texto = false;
       this.data = Array(2);
-    }, 2000)
+    }, 1000)
   }
 
   doRefresh(event: any){

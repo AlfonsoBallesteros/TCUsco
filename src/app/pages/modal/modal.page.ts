@@ -15,7 +15,8 @@ export class ModalPage implements OnInit {
   @ViewChild('map', {static: false}) mapElement: ElementRef;
   @ViewChild('pleaseConnect',{static: false}) pleaseConnect: ElementRef;
 */
-  data: any[] = Array(20);
+  data: any[];
+  data_texto: any[] = Array(10);
 
   lugares: Array<string> = [];  
   lugar: string = 'Lugares'
@@ -25,9 +26,12 @@ export class ModalPage implements OnInit {
     'Comment': ['Mi primer comentario']
   };
   pagina: string;
+  show_lista: boolean = false;
   show_denuncias: boolean = false;
   show_comment: boolean = false;
   show_post: boolean = false;
+  show_texto: boolean = false;
+  show_comment_texto: boolean = false;
   persona: string;
   photo: string;
   option: string = 'Seleccione';
@@ -47,11 +51,20 @@ export class ModalPage implements OnInit {
       this.show_denuncias = true;
     }else if(this.pagina == 'comentario'){
       this.show_comment = true;
+      this.show_texto = true;
+      setTimeout(() =>{
+        this.data = Array(20);
+        this.show_texto = false;
+        this.show_comment_texto = true;
+      }, 1000)
     }else if (this.pagina == "post"){
       this.show_post = true;
       if(this.lugares.length == 0){
         this.lugares = ['Usco', 'Agora', 'Administracion', 'Parque santander', 'Centro', 'Neiva'];
       }
+    }else if(this.pagina == 'Denuncias'){
+      this.show_lista = true;
+      this.data = Array(10);
     }
   }
   

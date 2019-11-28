@@ -130,7 +130,7 @@ ion-icon{
     font-size: 15px;
 }
 .boton-lugar{
-    width: 260px;
+    width: 105%;
     height: 25px;
     text-transform: none;
     --background: #f4f5f8 !important;;
@@ -158,8 +158,8 @@ ion-icon{
     margin: 0px;
 }
 .perfil{
-    width: 40px;
-    height: 40px;
+    width: 95%;
+    height: 95%;
     border-radius: 50%;
     margin-top: 5%;
 }
@@ -179,4 +179,22 @@ ion-icon{
 .boton-post{
     text-transform: none;
     margin: 0px;
+}
+.comment-denuncia{
+    width: 95%;
+    text-transform: none;
+    margin-bottom: 10px;
+    --background: #EAE1FB;
+    --border-color: #EAE1FB;
+    --border-style: solid;
+    --border-radius: 50px;
+}
+.boton-denuncias{
+    margin: 0px;
+    width: 100%!important;
+    height: 50px!important;
+}
+.max-denuncias{
+    max-height: 540px;
+    overflow-y: scroll;
 }
