@@ -1,0 +1,26 @@
+ion-avatar{
+    width: 140px;
+    height: auto;
+    margin-left: 28%;
+}
+form{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.img-register{
+    width: 140px;
+    height: 140px;
+}
+ion-fab{
+    left: 52%!important;
+    top: 15%!important;
+    
+}
+.error-message{
+    color: var(--ion-color-danger);
+}
+.input-radius{
+    border-style: solid;
+    border-color: #7044ff;
+    border-radius: 20px;
+}

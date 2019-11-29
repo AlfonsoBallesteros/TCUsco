@@ -1,0 +1,39 @@
+<app-header titulo=""></app-header>
+
+<ion-content>
+  <ion-fab>
+    <ion-fab-button (click)="switchImage()" color="tertiary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-item lines="none">
+    <ion-avatar slot="start">
+      <img class="img-register" [src]="photo"/>
+    </ion-avatar>
+  </ion-item>
+  <form [formGroup]="registerForm" (ngSubmit)="submit(registerForm.value)">
+    <ion-list>
+      <ion-item class="input-radius" mode="ios">
+        <ion-icon slot="start" name="person" color="tertiary"></ion-icon>
+        <ion-input autocapitalize formControlName="name" inputmode="text" placeholder="Nombre" mode="ios"></ion-input>
+      </ion-item>
+      <div *ngIf="registerForm.get('name').invalid && (registerForm.get('name').dirty || registerForm.get('name').touched)">
+        <div class="error-message" *ngIf="registerForm.get('name').errors.required">
+            <ion-icon name="information-circle-outline"></ion-icon>Nombre requerido
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('name').errors.minlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Nombre muy corto
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('name').errors.maxlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Nombre muy largo
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('name').errors.pattern">
+            <ion-icon name="information-circle-outline"></ion-icon>Nombre invalido
+        </div>
+      </div>
+    </ion-list>
+    <ion-button expand="full" shape="round" color="primary" type="submit" mode="ios" color="tertiary" [disabled]="!registerForm.valid">
+        Registrar
+    </ion-button>
+  </form>
+</ion-content> 
