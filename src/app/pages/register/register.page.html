@@ -14,7 +14,7 @@
   <form [formGroup]="registerForm" (ngSubmit)="submit(registerForm.value)">
     <ion-list>
       <ion-item class="input-radius" mode="ios">
-        <ion-icon slot="start" name="person" color="tertiary"></ion-icon>
+        <ion-icon class="icon-input" slot="start" name="person" color="tertiary"></ion-icon>
         <ion-input autocapitalize formControlName="name" inputmode="text" placeholder="Nombre" mode="ios"></ion-input>
       </ion-item>
       <div *ngIf="registerForm.get('name').invalid && (registerForm.get('name').dirty || registerForm.get('name').touched)">
@@ -30,6 +30,167 @@
         <div class="error-message" *ngIf="registerForm.get('name').errors.pattern">
             <ion-icon name="information-circle-outline"></ion-icon>Nombre invalido
         </div>
+      </div>
+      <ion-item class="input-radius" mode="ios">
+        <ion-icon class="icon-input" slot="start" name="person" color="tertiary"></ion-icon>
+        <ion-input autocapitalize formControlName="lastName" inputmode="text" placeholder="Apellido" mode="ios"></ion-input>
+      </ion-item>
+      <div *ngIf="registerForm.get('lastName').invalid && (registerForm.get('lastName').dirty || registerForm.get('lastName').touched)">
+        <div class="error-message" *ngIf="registerForm.get('lastName').errors.required">
+            <ion-icon name="information-circle-outline"></ion-icon>Apellido requerido
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('lastName').errors.minlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Apellido muy corto
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('lastName').errors.maxlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Apellido muy largo
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('lastName').errors.pattern">
+            <ion-icon name="information-circle-outline"></ion-icon>Apellido invalido
+        </div>
+      </div>
+      <ion-item class="input-radius" mode="ios">
+        <ion-icon class="icon-input" slot="start" name="card" color="tertiary"></ion-icon>
+        <ion-input formControlName="cedula" inputmode="text" placeholder="Cedula" mode="ios"></ion-input>
+      </ion-item>
+      <div *ngIf="registerForm.get('cedula').invalid && (registerForm.get('cedula').dirty || registerForm.get('cedula').touched)">
+        <div class="error-message" *ngIf="registerForm.get('cedula').errors.required">
+            <ion-icon name="information-circle-outline"></ion-icon>Cedula es requerida
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('cedula').errors.minlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Cedula muy corta
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('cedula').errors.maxlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Cedula muy larga
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('cedula').errors.pattern">
+            <ion-icon name="information-circle-outline"></ion-icon>Cedula invalida
+        </div>
+      </div>
+      <ion-row class="input-radius">
+        <ion-datetime color="dark" formControlName="date" min="1935" max="{{year}}" displayFormat="MMM DD YYYY" placeholder="Fecha de nacimiento" mode="ios" monthShortNames='Ene, Feb, Mar, Abr, May, jun, Jul, Ago, Set, Oct, Nov, Dic' doneText="Ok" cancelText="Cancelar"></ion-datetime>
+        <div class="icono">
+          <ion-icon class="icon-input" slot="end" name="calendar" color="tertiary"></ion-icon>
+        </div>
+      </ion-row>
+      <div *ngIf="registerForm.get('date').invalid && (registerForm.get('date').dirty || registerForm.get('date').touched)">
+        <div class="error-message" *ngIf="registerForm.get('date').errors.required">
+          <ion-icon name="information-circle-outline"></ion-icon>Fecha es requerida
+        </div>
+      </div>
+      <ion-item class="input-radius" mode="ios">
+        <ion-icon class="icon-input" slot="start" name="pin" color="tertiary"></ion-icon>
+        <ion-input formControlName="dir" inputmode="text" placeholder="Direccion" mode="ios"></ion-input>
+      </ion-item>
+      <div *ngIf="registerForm.get('dir').invalid && (registerForm.get('dir').dirty || registerForm.get('dir').touched)">
+        <div class="error-message" *ngIf="registerForm.get('dir').errors.required">
+            <ion-icon name="information-circle-outline"></ion-icon>Direccion es requerida
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('dir').errors.minlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Direccion muy corta
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('dir').errors.maxlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Direccion muy larga
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('dir').errors.pattern">
+            <ion-icon name="information-circle-outline"></ion-icon>Direccion invalida
+        </div>
+      </div>
+      <ion-item class="input-radius" mode="ios">
+        <ion-icon class="icon-input" slot="start" name="call" color="tertiary"></ion-icon>
+        <ion-input formControlName="tel" inputmode="tel" placeholder="Celular" mode="ios"></ion-input>
+      </ion-item>
+      <div *ngIf="registerForm.get('tel').invalid && (registerForm.get('tel').dirty || registerForm.get('tel').touched)">
+        <div class="error-message" *ngIf="registerForm.get('tel').errors.required">
+            <ion-icon name="information-circle-outline"></ion-icon>Celular es requerido
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('tel').errors.minlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Celular muy corto
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('tel').errors.maxlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Celular muy largo
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('tel').errors.pattern">
+            <ion-icon name="information-circle-outline"></ion-icon>Celular invalido
+        </div>
+      </div>
+      <ion-row class="input-radius">
+        <div class="icon-select">
+          <ion-icon class="icon-input" slot="start" name="transgender" color="tertiary"></ion-icon>
+        </div>
+        <ion-select formControlName="gender" placeholder="Genero" interface="popover" mode="ios" color="dark">
+          <ion-select-option *ngFor="let gender of genders" [value]="gender">{{gender}}</ion-select-option>
+        </ion-select>
+      </ion-row>
+      <div *ngIf="registerForm.get('gender').invalid && (registerForm.get('gender').dirty || registerForm.get('gender').touched)">
+        <div class="error-message" *ngIf="registerForm.get('gender').errors.required">
+          <ion-icon name="information-circle-outline"></ion-icon>Genero es requerido
+        </div>
+      </div>
+      <ion-row class="input-radius">
+        <div class="icon-select">
+          <ion-icon class="icon-input" slot="start" name="briefcase" color="tertiary"></ion-icon>
+        </div>
+        <ion-select formControlName="ocupation" placeholder="Ocupacion" interface="popover" mode="ios" color="dark" (ionChange)="ocupacion()">
+          <ion-select-option *ngFor="let ocupacion of ocupations" [value]="ocupacion">{{ocupacion}}</ion-select-option>
+        </ion-select>
+      </ion-row>
+      <div *ngIf="registerForm.get('ocupation').invalid && (registerForm.get('ocupation').dirty || registerForm.get('ocupation').touched)">
+        <div class="error-message" *ngIf="registerForm.get('ocupation').errors.required">
+          <ion-icon name="information-circle-outline"></ion-icon>Ocupacion es requerida
+        </div>
+      </div>
+      <div *ngIf="show_carrers">
+        <ion-row class="input-radius">
+        <div class="icon-select">
+          <ion-icon class="icon-input" slot="start" name="school" color="tertiary"></ion-icon>
+        </div>
+        <ion-select formControlName="carrer" placeholder="Carrera" interface="popover" mode="ios" color="dark">
+          <ion-select-option *ngFor="let carrera of carrers" [value]="carrera">{{carrera}}</ion-select-option>
+        </ion-select>
+      </ion-row>
+      <div *ngIf="registerForm.get('carrer').invalid && (registerForm.get('carrer').dirty || registerForm.get('carrer').touched)">
+        <div class="error-message" *ngIf="registerForm.get('carrer').errors.required">
+          <ion-icon name="information-circle-outline"></ion-icon>Carera es requerida
+        </div>
+      </div>
+    </div>
+    <ion-item class="input-radius" mode="ios">
+      <ion-icon class="icon-input" slot="start" name="bookmarks" color="tertiary"></ion-icon>
+      <ion-input formControlName="codigo" inputmode="number" placeholder="Codigo" mode="ios"></ion-input>
+    </ion-item>
+    <div *ngIf="registerForm.get('codigo').invalid && (registerForm.get('codigo').dirty || registerForm.get('codigo').touched)">
+        <div class="error-message" *ngIf="registerForm.get('codigo').errors.required">
+            <ion-icon name="information-circle-outline"></ion-icon>Codigo es requerido
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('codigo').errors.minlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Codigo muy corto
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('codigo').errors.maxlength">
+            <ion-icon name="information-circle-outline"></ion-icon>Codigo muy largo
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('codigo').errors.pattern">
+            <ion-icon name="information-circle-outline"></ion-icon>Codigo invalido
+        </div>
+    </div>
+    <ion-item class="input-radius" mode="ios">
+        <ion-icon class="icon-input" slot="start" name="key" color="tertiary"></ion-icon>
+        <ion-input formControlName="password" [type]="passwordType" inputmode="number" placeholder="Contraseña" mode="ios"></ion-input>
+        <ion-icon class="icon-input" slot="end" [name]="passwordIcon" color="tertiary" (click)="tooglePassword()"></ion-icon>
+      </ion-item>
+      <div *ngIf="registerForm.get('password').invalid && (registerForm.get('password').dirty || registerForm.get('password').touched)">
+          <div class="error-message" *ngIf="registerForm.get('password').errors.required">
+              <ion-icon name="information-circle-outline"></ion-icon>Contraseña es requerida
+          </div>
+          <div class="error-message" *ngIf="registerForm.get('password').errors.minlength">
+              <ion-icon name="information-circle-outline"></ion-icon>Contraseña muy corta
+          </div>
+          <div class="error-message" *ngIf="registerForm.get('password').errors.maxlength">
+              <ion-icon name="information-circle-outline"></ion-icon>Contraseña muy larga
+          </div>
+          <div class="error-message" *ngIf="registerForm.get('password').errors.pattern">
+              <ion-icon name="information-circle-outline"></ion-icon>Contraseña invalida
+          </div>
       </div>
     </ion-list>
     <ion-button expand="full" shape="round" color="primary" type="submit" mode="ios" color="tertiary" [disabled]="!registerForm.valid">
