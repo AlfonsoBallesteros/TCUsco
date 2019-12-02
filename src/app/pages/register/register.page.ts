@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, AlertController } from '@ionic/angular';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-
+import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
+import { PasswordValidator } from '../validators/password';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +15,8 @@ export class RegisterPage implements OnInit {
   passwordIcon: string = 'eye-off';
   ConfrimpasswordType: string = 'password';
   ConfrimpasswordIcon: string = 'eye-off';
-  equals_password: boolean = true;
+  equals_password: boolean = false;
+  show_form_complete: boolean = false;
   genders: Array<string>;
   ocupations: Array<string>;
   carrers: Array<string>;
@@ -23,15 +24,13 @@ export class RegisterPage implements OnInit {
   currentTime = null;
   matching_passwords_group: FormGroup;
   registerForm: FormGroup;
-  photo = 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg';
+  photo = '/assets/img/perfil1.jpg';
   
   constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController) { 
     // paste this code, should be include those are to constructor 
     this.currentTime = new Date();
     this.year = this.currentTime.getFullYear();
     this.year = this.year - 18;
-    console.log(this.year);
-   
   }
 
   ngOnInit() {
@@ -82,6 +81,17 @@ export class RegisterPage implements OnInit {
      " Medicina "
     ];
 
+    this.matching_passwords_group = new FormGroup({
+      password: new FormControl('', Validators.compose([
+        Validators.minLength(5),
+        Validators.required,
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
+      ])),
+      confirm_password: new FormControl('', Validators.required)
+    }, (formGroup: FormGroup) => {
+      return PasswordValidator.areEqual(formGroup);
+    });
+
     this.registerForm = this.formCrtl.group({
         name: new FormControl('', Validators.compose([
           Validators.maxLength(30),
@@ -112,11 +122,11 @@ export class RegisterPage implements OnInit {
           Validators.required])),
         gender: new FormControl('', Validators.required),
         ocupation: new FormControl('', Validators.required),
-        carrer: new FormControl('', Validators.required),
+        carrer: new FormControl(''),
         codigo: new FormControl('', Validators.compose([
           Validators.maxLength(11),
-          Validators.minLength(10),
-          Validators.pattern('^[1-2]+[0,9]+[0-2]+[0-9]{1,8}'),
+          Validators.minLength(10),//^[1-2]+[0,9]+[0-2]+[0-9]{1,8}
+          Validators.pattern('^[1-2]+[0,9]+[0-9]{1,9}'),
           Validators.required])),
         password: new FormControl('', Validators.compose([
           Validators.maxLength(12),
@@ -124,7 +134,9 @@ export class RegisterPage implements OnInit {
           Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$'),
           Validators.required])),
         confirm_password: new FormControl('', Validators.compose([
-            Validators.required])),
+            Validators.required,
+            this.equalto('password')])),
+        terms: new FormControl(true, Validators.pattern('true'))
       });
   } 
   ocupacion(){
@@ -136,6 +148,20 @@ export class RegisterPage implements OnInit {
     }
   }
 
+  equalto(field_name): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+    
+    let input = control.value;
+    
+    let isValid=control.root.value[field_name]==input
+    if(!isValid){
+      return { 'equalTo': {isValid} }
+    }else{ 
+      return null;
+      }
+    };
+  }
+
   tooglePassword(){
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
      this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
@@ -144,25 +170,34 @@ export class RegisterPage implements OnInit {
     this.ConfrimpasswordType = this.ConfrimpasswordType === 'text' ? 'password' : 'text' ;
     this.ConfrimpasswordIcon = this.ConfrimpasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
+  /*
+  match_password(event: any){
+    this.equals_password = true
 
-  match_password(){
     let password = this.registerForm.get('password').value;
-    console.log(password);
-    let confirm = this.registerForm.get('confirm_password').value;
-    console.log(confirm);
+    let confirm = event.target.value;
     if(password === confirm){
-      this.equals_password = false
-      console.log(this.equals_password);
+      this.equals_password = false;
+      if(this.registerForm.valid == true){
+        this.show_form_complete = true;
+        console.log('Formulario... ' + this.registerForm.valid);
+      }else{
+        this.show_form_complete = false;
+      }
+    }else{
+      this.equals_password = true;
+      
     }
   }
-
+*/
   submit(values){
-    /*
-    if(this.photo == 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg'){
+    
+    if(this.photo == '/assets/img/perfil1.jpg'){
       this.presentAlert();
+      //this.registerForm.value['name'] = 'uri';
     }else{
       console.log(this.registerForm.value);
-    }*/
+    }
     console.log(this.registerForm.value);
   }
 
