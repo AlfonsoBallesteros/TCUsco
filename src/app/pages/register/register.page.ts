@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, AlertController } from '@ionic/angular';
+import { ActionSheetController, AlertController, ToastController } from '@ionic/angular';
 import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
 import { PasswordValidator } from '../validators/password';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,7 @@ export class RegisterPage implements OnInit {
   registerForm: FormGroup;
   photo = '/assets/img/perfil1.jpg';
   
-  constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController) { 
+  constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private toastCrtl: ToastController, private router: Router) { 
     // paste this code, should be include those are to constructor 
     this.currentTime = new Date();
     this.year = this.currentTime.getFullYear();
@@ -93,6 +94,7 @@ export class RegisterPage implements OnInit {
     });
 
     this.registerForm = this.formCrtl.group({
+        photo: new FormControl(''),
         name: new FormControl('', Validators.compose([
           Validators.maxLength(30),
           Validators.minLength(5),
@@ -191,14 +193,16 @@ export class RegisterPage implements OnInit {
   }
 */
   submit(values){
-    
+    /*
     if(this.photo == '/assets/img/perfil1.jpg'){
       this.presentAlert();
       //this.registerForm.value['name'] = 'uri';
     }else{
       console.log(this.registerForm.value);
-    }
+    }*/
     console.log(this.registerForm.value);
+    this.toastSave();
+    this.router.navigate(["/login"]);
   }
 
   async switchImage() {
@@ -235,5 +239,14 @@ export class RegisterPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async toastSave() {
+    const toast = await this.toastCrtl.create({
+      message: 'Usuarios creado',
+      duration: 2000,
+      mode:"md"
+    });
+    toast.present();
   }
 }

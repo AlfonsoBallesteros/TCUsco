@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
 import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-modal.component';
 import {myEnterAnimation} from '../../components/animations/enter';
 import {myLeaveAnimation} from '../../components/animations/leave'
@@ -17,9 +17,75 @@ export class PerfilPage implements OnInit {
   edit = true;
   genero = 'Masculino';
   count: number = 0;
-  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController) { }
+  message: string = '';
+  ocupacion: string = '';
+  genders: Array<string>;
+  ocupations: Array<string>;
+  carrers: Array<string>;
+  carrer: string;
+  show_carrers: boolean = true;
+  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController) {}
 
   ngOnInit() {
+
+    this.genders = [
+      "Masculino",
+      "Femenino",
+      "Indefinido"
+    ]; 
+    this.ocupations = [
+      "Estudiante",
+      "Docente",
+      "Directivo",
+      "Empleado"
+    ];
+    
+    this.carrers = [
+      "Biología Aplicada",
+      "Física",
+      "Matemática Aplicada",
+      "Tec. Acuicultura Continental",
+      "Ciencia Política",
+      "Derecho",
+      "Comunicación Social",
+      "Psicología",
+      "Administración de Empresas",
+      "Administración Financiera",
+      "Contaduría Pública",
+      "Administración Turística",
+      "Economía",
+      "Tecnología en Gestión Financiera",
+      "Lic. Ciencias Naturales",
+      "Lic. Ciencias Sociales",
+      "Lic. Educación Artística y Cultural",
+      "Lic. Educación Física",
+      "Lic. Inglés ",
+      "Lic. Literatura-Lengua Castellana ",
+      "Lic. Matemáticas ",
+      "Lic. Educación Infantil",
+      "Tec. Obras Civiles",
+      "Tec. Desarrollo de Software",
+      "Ingeniería Agrícola",
+      "Ingeniería Agroindustrial",
+      "Ingeniería Civil",
+     "Ingeniería de Petróleos",
+      "Ingeniería de Software",
+      "Ingeniería Electrónica",
+      "Enfermería ",
+     " Medicina "
+    ];
+
+    this.ocupacion = 'Estudiante';
+    this.carrer = 'Ingenieria de software'
+  }
+  
+  changeOcupation(){
+    let ocupacion = ''
+    if(ocupacion == 'Estudiante'){
+      this.show_carrers = true;
+    }else{
+      this.show_carrers = false;
+    }
   }
 
   async Image(){
@@ -48,6 +114,7 @@ export class PerfilPage implements OnInit {
     });
     await actionSheet.present();
     }
+    
     async openImage(){
       let modal = await this.modalCtrl.create({
         component: PreviewModalComponent, 
@@ -86,8 +153,19 @@ export class PerfilPage implements OnInit {
   }
 
   Guardar(){
+    this.message = 'Edicion Exitosa';
+    this.toastSave();
     this.edit = true;
     this.homeColor = '1px solid #f4f5f8';
+  }
+
+  async toastSave() {
+    const toast = await this.toastCrtl.create({
+      message: this.message,
+      duration: 2000,
+      mode:"md"
+    });
+    toast.present();
   }
 
 }

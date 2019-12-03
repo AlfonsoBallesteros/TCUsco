@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { ModalController, NavParams, PopoverController, Platform } from '@ionic/angular';
+import { ModalController, NavParams, PopoverController, Platform, ToastController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
@@ -35,9 +35,9 @@ export class ModalPage implements OnInit {
   persona: string;
   photo: string;
   option: string = 'Seleccione';
-  
+  message: string ='';
 
-  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation) {
+  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController) {
    }
 
   ngOnInit() {
@@ -121,6 +121,12 @@ export class ModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  bloquear(){
+    this.message = 'Usuario Bloqueado';
+    this.toastBloqueo();
+    this.modalCtrl.dismiss();
+  }
+
   close(){
     this.modalCtrl.dismiss();
   }
@@ -144,6 +150,15 @@ export class ModalPage implements OnInit {
   }
   go(){
     this.data.length++;
+  }
+
+  async toastBloqueo() {
+    const toast = await this.toastCrtl.create({
+      message: this.message,
+      duration: 2000,
+      mode:"md"
+    });
+    toast.present();
   }
 }
 

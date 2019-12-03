@@ -1,0 +1,31 @@
+.img-register{
+    width: 200px;
+    height: 200px;
+    
+    margin-left: 20%;
+    margin-bottom: 0%;
+}
+.name-app{
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+form{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.error-message{
+    color: var(--ion-color-danger);
+}
+.icon-input{
+    font-size: 25px;
+}
+.input-radius{
+    border-style: solid;
+    border-color: #7044ff;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+.register{
+    margin: 40px 20px 0px 20px;
+}

@@ -1,7 +1,7 @@
 <app-header titulo="Perfil"></app-header>
 
 <ion-content>
-    <ion-fab slot="fixed">                                                                                                                        
+    <ion-fab>                                                                                                                        
         <ion-fab-button color="tertiary" (click)="Image()">                                                                                   
             <ion-icon name="camera"></ion-icon>
         </ion-fab-button>                                                                                                                         
@@ -17,8 +17,15 @@
         <ion-col size="8">
             <ion-row class="input-first">
                 <ion-col size="12" class="col-first"><!---->
-                    <ion-textarea class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="2" value="Alfonso Ballesteros Hernandez" mode="ios" [readonly]="edit"></ion-textarea>
-                    <ion-textarea class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="2" value="Estudiante - Ingenieria Software" mode="ios" [readonly]="edit"></ion-textarea>
+                    <ion-textarea class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="2" value="Alfonso Ballesteros Hernandez" mode="ios" [readonly]="edit"></ion-textarea> 
+                    <ion-select (ionChange)="changeOcupation()" [placeholder]="ocupacion" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" [disabled]="edit">
+                            <ion-select-option *ngFor="let ocupation of ocupations" [value]="ocupation">{{ocupation}}</ion-select-option>
+                    </ion-select>
+                    <div *ngIf="show_carrers">
+                        <ion-select [placeholder]="carrer" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" [disabled]="edit">
+                            <ion-select-option *ngFor="let carrer of carrers" [value]="carrer">{{carrer}}</ion-select-option>
+                        </ion-select>
+                    </div>
                 </ion-col>
             </ion-row>
         </ion-col>
@@ -60,8 +67,8 @@
                 <ion-col size="5">
                     <ion-label class="text-first" color="dark">Genero:</ion-label>
                     <ion-select [ngStyle]="{ 'border-bottom' : homeColor}" [placeholder]="genero" interface="popover" mode="ios" color="dark" [disabled]="edit">
-                        <ion-select-option value="f">Femenino</ion-select-option>
-                        <ion-select-option value="m">Masculino</ion-select-option>
+                        <ion-select-option value="femenino">Femenino</ion-select-option>
+                        <ion-select-option value="masculino">Masculino</ion-select-option>
                     </ion-select>
                 </ion-col>
             </ion-row>

@@ -9,10 +9,12 @@ ion-avatar {
 }
 .avatar{
     padding: 0%;
+    margin-top: 8%;
 }
 .col-first{
     padding: 0px;
     margin-top: 2%; 
+    margin-bottom: 8%;
 }
 .input-first{
     padding: 0% 0% 0% 0%;
@@ -33,7 +35,7 @@ ion-avatar {
     font-size: 15px;
 }
 ion-fab{
-    top: 9%!important;
+    top: 10%!important;
     left: 18%!important;
 }
 ion-fab-button{
@@ -87,4 +89,11 @@ ion-datetime{
     margin: 0px;
     width: 100%!important;
     height: 55px!important;
+}
+.select-first{
+    --padding-top: 0%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    --padding-bottom: 0%;  
+    font-size: 15px;
 }
