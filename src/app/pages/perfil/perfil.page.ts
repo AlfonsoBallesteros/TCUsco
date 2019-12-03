@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, ModalController, ToastController, AlertController } from '@ionic/angular';
 import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-modal.component';
 import {myEnterAnimation} from '../../components/animations/enter';
 import {myLeaveAnimation} from '../../components/animations/leave'
 import { ModalPage } from '../modal/modal.page';
+import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-perfil',
@@ -12,19 +13,34 @@ import { ModalPage } from '../modal/modal.page';
 })
 export class PerfilPage implements OnInit {
 
-  perfil: string = "https://firebasestorage.googleapis.com/v0/b/tcusco-77d95.appspot.com/o/img_perfil%2Fperfil2.jpeg?alt=media&token=526bc9ec-5416-4002-8a99-19af909615c4";
   homeColor = '1px solid none';
   edit = true;
-  genero = 'Masculino';
+  veces: number = 0; 
   count: number = 0;
   message: string = '';
-  ocupacion: string = '';
   genders: Array<string>;
   ocupations: Array<string>;
   carrers: Array<string>;
-  carrer: string;
   show_carrers: boolean = true;
-  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController) {}
+  edit_perfil: FormGroup;
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
+  user = {
+    'photo': 'https://firebasestorage.googleapis.com/v0/b/tcusco-77d95.appspot.com/o/img_perfil%2Fperfil2.jpeg?alt=media&token=526bc9ec-5416-4002-8a99-19af909615c4',
+    'name': 'Alfonso Ballesteros',
+    'ocupacion': 'Estudiante',
+    'carrera': 'Ingenieria de software',
+    'celular': '3177492167',
+    'cedula': '1003815307',
+    'date': '2019-11-27',
+    'direccion': 'carrera 6a #3w - 16',
+    'genero': 'masculino',
+    'codigo': '20172161991',
+    'password': '123456789'
+  }
+
+  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController, private formCrtl: FormBuilder, private alertCrtl: AlertController) {}
 
   ngOnInit() {
 
@@ -52,7 +68,7 @@ export class PerfilPage implements OnInit {
       "Administración de Empresas",
       "Administración Financiera",
       "Contaduría Pública",
-      "Administración Turística",
+      "Administración Turística", 
       "Economía",
       "Tecnología en Gestión Financiera",
       "Lic. Ciencias Naturales",
@@ -72,15 +88,50 @@ export class PerfilPage implements OnInit {
       "Ingeniería de Software",
       "Ingeniería Electrónica",
       "Enfermería ",
-     " Medicina "
+      " Medicina "
     ];
 
-    this.ocupacion = 'Estudiante';
-    this.carrer = 'Ingenieria de software'
+    this.edit_perfil = this.formCrtl.group({
+      name: new FormControl(this.user.name, Validators.required),
+      ocupation: new FormControl(this.user.ocupacion, Validators.required),
+      carrer: new FormControl(this.user.carrera, Validators.required),
+      tel: new FormControl(this.user.celular, Validators.required),
+      date: new FormControl(this.user.date, Validators.required),
+      dir: new FormControl(this.user.direccion, Validators.required),
+      gender: new FormControl(this.user.genero, Validators.required),
+      password: new FormControl(this.user.password, Validators.required),
+      confirm_password: new FormControl('', Validators.required),
+    });
+
+    if(this.user.ocupacion != 'Estudiante'){
+      this.show_carrers = false;
+    }else{
+      this.show_carrers = true;
+    }
+  }
+
+  equalto(field_name): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+    
+    let input = control.value;
+    
+    let isValid=control.root.value[field_name]==input
+    console.log(control.root.value[field_name]);
+    if(!isValid){
+      return { 'equalTo': {isValid} }
+    }else{ 
+      return null;
+      }
+    };
+  }
+
+  tooglePassword(){
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
   
   changeOcupation(){
-    let ocupacion = ''
+    let ocupacion = this.edit_perfil.get('ocupation').value;
     if(ocupacion == 'Estudiante'){
       this.show_carrers = true;
     }else{
@@ -114,14 +165,14 @@ export class PerfilPage implements OnInit {
     });
     await actionSheet.present();
     }
-    
+
     async openImage(){
       let modal = await this.modalCtrl.create({
         component: PreviewModalComponent, 
         enterAnimation: myEnterAnimation,
         leaveAnimation: myLeaveAnimation,
         componentProps:{
-          img: this.perfil
+          img: this.user.photo
         }
       });
     return await modal.present();
@@ -134,7 +185,7 @@ export class PerfilPage implements OnInit {
       componentProps:{
         pagina:'Denuncias',
         id:'1',
-        photo: this.perfil
+        photo: this.user.photo
       }
     });
   return await modal.present();
@@ -153,10 +204,30 @@ export class PerfilPage implements OnInit {
   }
 
   Guardar(){
-    this.message = 'Edicion Exitosa';
-    this.toastSave();
-    this.edit = true;
-    this.homeColor = '1px solid #f4f5f8';
+    if(this.edit_perfil.valid == true){
+      let password = this.edit_perfil.get('password').value;
+      let confirm = this.edit_perfil.get('confirm_password').value;
+      if(password == confirm){
+        this.message = 'Edicion Exitosa';
+        this.toastSave();
+        this.edit = true;
+        this.homeColor = '1px solid #f4f5f8';
+        console.log(this.edit_perfil.value);
+      }else{
+        this.message = 'Contraseña no coinciden';
+        this.alertError();
+      }
+    }else{
+      if(this.veces < 1){
+        this.message = 'Porfavor rellenar todos los campos';
+        this.alertError();
+        this.veces++;
+      }else{
+        this.message = 'Porfavor verificar contraseña';
+        this.alertError();
+        this.veces = 0;
+      }
+    }
   }
 
   async toastSave() {
@@ -166,6 +237,17 @@ export class PerfilPage implements OnInit {
       mode:"md"
     });
     toast.present();
+  }
+
+  async alertError() {
+    const alert = await this.alertCrtl.create({
+      header: 'Invalido',
+      message: this.message,
+      mode: 'ios',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

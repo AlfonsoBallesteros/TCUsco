@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core'
 import { ModalController, NavParams, PopoverController, Platform, ToastController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-modal',
@@ -37,7 +38,13 @@ export class ModalPage implements OnInit {
   option: string = 'Seleccione';
   message: string ='';
 
-  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController) {
+  crear_trayecto: FormGroup;
+  crear_denuncia: FormGroup;
+  crear_comentario: FormGroup;
+  show_error: boolean = false;
+  show_option: boolean = false;
+
+  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController, private formCrtl: FormBuilder) {
    }
 
   ngOnInit() {
@@ -49,6 +56,15 @@ export class ModalPage implements OnInit {
 
     if(this.pagina == 'Denunciar'){
       this.show_denuncias = true;
+
+      this.crear_denuncia = this.formCrtl.group({
+        descripcion: new FormControl('', Validators.required),
+        motivo: new FormControl(this.option, Validators.required),
+        id_usuario: new FormControl(''),
+        id_usuario_victima: new FormControl(''),
+        id_publicacion: new FormControl(''),
+      });
+
     }else if(this.pagina == 'comentario'){
       this.show_comment = true;
       this.show_texto = true;
@@ -57,11 +73,25 @@ export class ModalPage implements OnInit {
         this.show_texto = false;
         this.show_comment_texto = true;
       }, 1000)
+      
+      this.crear_comentario = this.formCrtl.group({
+        descripcion: new FormControl('', Validators.required),
+        id_publicacion: new FormControl(''),
+        id_usuario: new FormControl(''),
+      });
+
     }else if (this.pagina == "post"){
       this.show_post = true;
       if(this.lugares.length == 0){
         this.lugares = ['Usco', 'Agora', 'Administracion', 'Parque santander', 'Centro', 'Neiva'];
       }
+      this.crear_trayecto = this.formCrtl.group({
+        descripcion: new FormControl('', Validators.required),
+        lugar: new FormControl(this.lugar, Validators.required),
+        id_usuario: new FormControl(''),
+        ubicacion: new FormControl(''),
+      });
+
     }else if(this.pagina == 'Denuncias'){
       this.show_lista = true;
       this.data = Array(10);
@@ -117,13 +147,39 @@ export class ModalPage implements OnInit {
     this.option = data.item;
   }
 
-  save(){
-    this.modalCtrl.dismiss();
+  save_denuncia(){
+    this.crear_denuncia.value['motivo'] = this.option;
+    if(this.crear_denuncia.valid == true){
+      if(this.crear_denuncia.value['motivo'] == 'Seleccione'){
+        this.show_option = true;
+      }else{
+        this.show_option = false;
+        console.log(this.crear_denuncia.value);
+        this.modalCtrl.dismiss();
+        this.message = 'Se creo la denuncia exitosamente'
+        this.toastMensaje();
+      }
+    }else{
+      if(this.crear_denuncia.value['motivo'] == 'Seleccione'){
+        this.show_option = true;
+      }else{
+        this.show_option = false;
+      }
+      console.log(this.crear_denuncia.value);
+    }
+    
+  }
+
+  save_comentarios(){
+    if(this.crear_comentario.valid){
+      console.log(this.crear_comentario.value)
+      this.crear_comentario.reset();
+    }
   }
 
   bloquear(){
     this.message = 'Usuario Bloqueado';
-    this.toastBloqueo();
+    this.toastMensaje();
     this.modalCtrl.dismiss();
   }
 
@@ -131,11 +187,28 @@ export class ModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  locacion(){
-    this.modalCtrl.dismiss({
-      location: this.lugar
-    });
-    
+  crear_post(){
+    this.crear_trayecto.value['lugar'] = this.lugar;
+    if(this.crear_trayecto.valid == true){
+      if(this.crear_trayecto.value['lugar'] == 'Lugares'){
+        this.show_error = true;
+      }else{
+        this.show_error = false;
+        this.modalCtrl.dismiss();
+        this.message = 'Se creo la publicacion exitosamente'
+        this.toastMensaje();
+      }
+      console.log(this.crear_trayecto.value);
+      
+    }else{
+      if(this.crear_trayecto.value['lugar'] == 'Lugares'){
+        this.show_error = true;
+      }else{
+        this.show_error = false;
+      }
+      console.log(this.crear_trayecto.value);
+      console.log(this.crear_trayecto.valid);
+    }
   }
   SearchPlaces() {
   
@@ -152,7 +225,7 @@ export class ModalPage implements OnInit {
     this.data.length++;
   }
 
-  async toastBloqueo() {
+  async toastMensaje() {
     const toast = await this.toastCrtl.create({
       message: this.message,
       duration: 2000,

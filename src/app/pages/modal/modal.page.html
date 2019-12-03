@@ -15,6 +15,7 @@
         </ion-item>
       </ion-card-header>
       <ion-card-content>
+      <form [formGroup]="crear_denuncia">
         <ion-item mode="ios" color="light" button (click)="select()">
           <ion-label>Motivo:</ion-label>
           <ion-buttons slot="end">
@@ -23,11 +24,20 @@
         </ion-item>
         <ion-item color="light" mode="ios">
           <ion-label position="stacked" class="descripcion">Descripcion</ion-label>
-          <ion-textarea class="input-descripcion" rows="5" maxLength="500" placeholder="Describe lo que te paso aqui..." required></ion-textarea>
+          <ion-textarea formControlName="descripcion" class="input-descripcion" rows="5" maxLength="500" placeholder="Describe lo que te paso aqui..." required></ion-textarea>
         </ion-item>
-        <ion-button (click)="save()" color="primary" class="boton" mode="ios">
+        <div class="error-message" *ngIf="crear_denuncia.get('descripcion').invalid && (crear_denuncia.get('descripcion').dirty || crear_denuncia.get('descripcion').touched)">
+          <div *ngIf="crear_denuncia.get('descripcion').errors.required">
+              <ion-icon name="information-circle-outline"></ion-icon>Campo descripcion es requerido
+          </div>
+        </div>
+        <div *ngIf="show_option">
+            <ion-icon name="information-circle-outline"></ion-icon>Campo Motivo es requerido
+        </div>
+        <ion-button (click)="save_denuncia()" color="primary" class="boton" mode="ios">
           Enviar
         </ion-button>
+      </form>
       </ion-card-content>
     </ion-card>
     <!--Modal de comentarios-->
@@ -82,6 +92,7 @@
 
 <!---Crear Trayecto-->
     <ion-card *ngIf="show_post" color="light" mode="ios">
+    <form [formGroup]="crear_trayecto">
       <ion-card-header class="crear">
           <ion-card-title>Crear Trayecto</ion-card-title>
       </ion-card-header>
@@ -101,12 +112,20 @@
               </ion-button>
             </ion-col>
         </ion-row>
-        <ion-textarea class="text-post" rows="5" maxLength="500" placeholder="Crea un Trayecto..." required></ion-textarea>
+        <ion-textarea formControlName="descripcion" class="text-post" rows="5" maxLength="500" placeholder="Crea un Trayecto..." required></ion-textarea>
+        <div class="error-message" *ngIf="crear_trayecto.get('descripcion').invalid && (crear_trayecto.get('descripcion').dirty || crear_trayecto.get('descripcion').touched)">
+          <div *ngIf="crear_trayecto.get('descripcion').errors.required">
+              <ion-icon name="information-circle-outline"></ion-icon>Campo descripcion requerido
+          </div>
+        </div>
+        <div *ngIf="show_error">
+            <ion-icon name="information-circle-outline"></ion-icon>Campo Lugares requerido
+        </div>
       </ion-card-content>
-      <ion-button (click)="locacion()" color="primary" class="boton-post" mode="ios" expand="full">
+      <ion-button (click)="crear_post()" color="primary" class="boton-post" mode="ios" expand="full">
         Enviar
       </ion-button>
-      <div #map id="map"></div>
+    </form>
     </ion-card>
 <!--Modal Lista de denuncias-->
 <ion-refresher *ngIf="show_lista" slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -173,16 +192,18 @@
 </ion-content>
 <!--Modal de comentarios-->
 <ion-footer *ngIf="show_comment">
+  <form [formGroup]="crear_comentario">
       <ion-toolbar>
         <ion-item class="input-comment" mode="ios">
-          <ion-textarea class="input" rows="1" placeholder="Comenta..." mode="ios" id="comment" #comment></ion-textarea>
+          <ion-textarea formControlName="descripcion" class="input" rows="1" placeholder="Comenta..." mode="ios" id="comment" #comment></ion-textarea>
           <ion-buttons slot="end">
-            <ion-button (click)="save()">
+            <ion-button (click)="save_comentarios()">
               <ion-icon class="size-icon" name="send" color="tertiary"></ion-icon>
             </ion-button>
           </ion-buttons>
       </ion-item>
       </ion-toolbar>
+    </form>
 </ion-footer>
 <ion-footer *ngIf="show_lista" no-border>
       <ion-button class="boton-denuncias" expand="full" (click)="bloquear()" mode="ios">
