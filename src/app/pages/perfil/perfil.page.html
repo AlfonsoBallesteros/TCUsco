@@ -11,19 +11,20 @@
         <ion-col size="4">
             <ion-item lines="none" class="avatar">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                 <ion-avatar>
-                    <img class="img-perfil" [src]="user.photo"/>
+                    <img class="img-perfil" [src]="users.photo"/>
                 </ion-avatar>  
             </ion-item>
         </ion-col>
         <ion-col size="8">
             <ion-row class="input-first">
                 <ion-col size="12" class="col-first"><!---->
-                    <ion-textarea formControlName="name" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="2" value="{{user.name}}" mode="ios" [readonly]="edit"></ion-textarea>
-                    <ion-select formControlName="ocupation" (ionChange)="changeOcupation()" [placeholder]="user.ocupacion" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" [disabled]="edit">
+                    <ion-textarea formControlName="name" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="1" value="{{users.first_name}}" mode="ios" [readonly]="edit"></ion-textarea>
+                    <ion-textarea formControlName="lastname" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="1" value="{{users.last_name}}" mode="ios" [readonly]="edit"></ion-textarea>
+                    <ion-select formControlName="ocupation" (ionChange)="changeOcupation()" [placeholder]="users.ocupacion" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" [disabled]="edit">
                             <ion-select-option *ngFor="let ocupation of ocupations" [value]="ocupation">{{ocupation}}</ion-select-option>
                     </ion-select>
                     <div *ngIf="show_carrers">
-                        <ion-select formControlName="carrer" [placeholder]="user.carrera" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" [disabled]="edit">
+                        <ion-select formControlName="carrer" [placeholder]="users.carrera" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" [disabled]="edit">
                             <ion-select-option *ngFor="let carrer of carrers" [value]="carrer">{{carrer}}</ion-select-option>
                         </ion-select>
                     </div>
@@ -43,31 +44,31 @@
             <ion-row class="">
                 <ion-col size="6" class="col-second"><!---->
                     <ion-label color="dark">Celular:</ion-label>
-                    <ion-input formControlName="tel" color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="{{user.celular}}" mode="ios" [readonly]="edit"></ion-input>
+                    <ion-input formControlName="tel" color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="{{users.celular}}" mode="ios" [readonly]="edit"></ion-input>
                 </ion-col>
                 <ion-col size="6">
                     <ion-label color="dark" >Cedula:</ion-label>
-                    <ion-input class="text-first" type="text" value="{{user.cedula}}" mode="ios" readonly></ion-input>
+                    <ion-input class="text-first" type="text" value="{{users.cedula}}" mode="ios" readonly></ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col size="6"><!---->
                     <ion-label color="dark">Fecha de nacimiento:</ion-label> <!--<ion-input color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="12 / 11 / 2019" mode="ios" [readonly]="edit"></ion-input>-->
-                    <ion-datetime formControlName="date" color="dark" class="text-first" displayFormat="MMM DD YYYY" [ngStyle]="{ 'border-bottom' : homeColor}" value="{{user.date}}" mode="ios" [readonly]="edit"></ion-datetime>
+                    <ion-datetime formControlName="date" color="dark" class="text-first" displayFormat="MMM DD YYYY" [ngStyle]="{ 'border-bottom' : homeColor}" value="{{users.date_nacimiento}}" mode="ios" [readonly]="edit"></ion-datetime>
                 </ion-col>
                 <ion-col size="6">
                     <ion-label color="dark" >Edad:</ion-label>
-                    <ion-input class="text-first" type="text" value="19 Años" mode="ios" readonly></ion-input>
+                    <ion-input class="text-first" type="text" value="{{age}} Años" mode="ios" readonly></ion-input>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col size="7"><!---->
                     <ion-label color="dark">Direccion:</ion-label> 
-                    <ion-input formControlName="dir" color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="{{user.direccion}}" mode="ios" [readonly]="edit"></ion-input>
+                    <ion-input formControlName="dir" color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="{{users.direccion}}" mode="ios" [readonly]="edit"></ion-input>
                 </ion-col>
                 <ion-col size="5">
                     <ion-label class="text-first" color="dark">Genero:</ion-label>
-                    <ion-select formControlName="gender" [ngStyle]="{ 'border-bottom' : homeColor}" placeholder="{{user.genero}}" interface="popover" mode="ios" color="dark" [disabled]="edit">
+                    <ion-select formControlName="gender" [ngStyle]="{ 'border-bottom' : homeColor}" placeholder="{{users.genero}}" interface="popover" mode="ios" color="dark" [disabled]="edit">
                         <ion-select-option value="femenino">Femenino</ion-select-option>
                         <ion-select-option value="masculino">Masculino</ion-select-option>
                     </ion-select>
@@ -76,14 +77,14 @@
             <ion-row>
                 <ion-col size="12" class="text-second">
                     <ion-label color="dark">Codigo (Usuario):</ion-label> 
-                    <ion-label color="" class="text-second" mode="ios">{{user.codigo}}</ion-label>
+                    <ion-label color="" class="text-second" mode="ios">{{users.codigo}}</ion-label>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col size="6">
                     <ion-label class="text-first" color="dark">Contraseña: </ion-label>
                     <ion-icon class="icon-password" [name]="passwordIcon" (click)="tooglePassword()" ></ion-icon> 
-                    <ion-input formControlName="password" color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}"  [type]="passwordType" value="{{user.password}}" mode="ios" [readonly]="edit"></ion-input>
+                    <ion-input formControlName="password" color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}"  [type]="passwordType" value="{{users.password}}" mode="ios" [readonly]="edit"></ion-input>
                 </ion-col>
                 <ion-col size="6" *ngIf="!edit" class="text-confirm"> 
                     <ion-label color="dark">Repetir Contraseña:</ion-label>

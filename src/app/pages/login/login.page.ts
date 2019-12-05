@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -13,12 +14,12 @@ export class LoginPage implements OnInit {
   login_form: FormGroup;
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
+  valido: string;
   message: string;
-
   codigo='u20172161991'
   password='Alfonso123'
 
-  constructor(private formCrtl: FormBuilder, private alertCrtl: AlertController, private router: Router, private toastCrtl: ToastController) { }
+  constructor(private formCrtl: FormBuilder, private alertCrtl: AlertController, private router: Router, private toastCrtl: ToastController, private usuarioServices: UsuarioService) { }
 
   ngOnInit() {
 
@@ -28,10 +29,35 @@ export class LoginPage implements OnInit {
     });
   }
 
-  submit(value){
+  async submit(value){
     if(this.login_form.valid == true){
       let codigo = this.login_form.get('codigo').value;
       let password = this.login_form.get('password').value;
+      const valido =  await this.usuarioServices.login( codigo, password);
+      if(valido){
+        this.router.navigate(['/inicio']);
+        this.message = 'Inicio de session exitosa';
+        this.toastLogin();
+      }else{
+        this.message= 'Contraseña/Usuario Incorrecto';
+        this.alertLogin();
+      }
+
+      /* 
+        .subscribe( res =>{ 
+         this.mensaje[0] = res;
+         if(this.mensaje[0].ok){
+          this.router.navigate(['/inicio']);
+          this.message = 'Inicio de session exitosa';
+          this.toastLogin();
+          this.valido = JSON.stringify(this.mensaje[0].id);
+         }else{
+          this.message = JSON.stringify(this.mensaje[0].message);
+          this.alertLogin();
+         }
+        });*/
+      
+      /*
       if(codigo == this.codigo){
         if( password == this.password){
           this.router.navigate(['/inicio']);
@@ -45,6 +71,7 @@ export class LoginPage implements OnInit {
         this.message= 'Este codigo no aparece registrado';
         this.alertLogin();
       }
+      */
     }else{
       this.message = 'Todos los campos son requeridos'
       this.alertLogin();

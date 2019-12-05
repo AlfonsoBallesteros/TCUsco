@@ -5,6 +5,8 @@ import {myEnterAnimation} from '../../components/animations/enter';
 import {myLeaveAnimation} from '../../components/animations/leave'
 import { ModalPage } from '../modal/modal.page';
 import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { Usuarios } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-perfil',
@@ -25,7 +27,9 @@ export class PerfilPage implements OnInit {
   edit_perfil: FormGroup;
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
-
+  users: Usuarios = {};
+  age:number;
+/*
   user = {
     'photo': 'https://firebasestorage.googleapis.com/v0/b/tcusco-77d95.appspot.com/o/img_perfil%2Fperfil2.jpeg?alt=media&token=526bc9ec-5416-4002-8a99-19af909615c4',
     'name': 'Alfonso Ballesteros',
@@ -38,11 +42,14 @@ export class PerfilPage implements OnInit {
     'genero': 'masculino',
     'codigo': '20172161991',
     'password': '123456789'
-  }
+  }*/
 
-  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController, private formCrtl: FormBuilder, private alertCrtl: AlertController) {}
+  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private usuarioService: UsuarioService) {}
 
   ngOnInit() {
+    this.users = this.usuarioService.getUsuario();
+    console.log(this.users._id);
+    console.log(this.users);
 
     this.genders = [
       "Masculino",
@@ -92,31 +99,40 @@ export class PerfilPage implements OnInit {
     ];
 
     this.edit_perfil = this.formCrtl.group({
-      name: new FormControl(this.user.name, Validators.required),
-      ocupation: new FormControl(this.user.ocupacion, Validators.required),
-      carrer: new FormControl(this.user.carrera, Validators.required),
-      tel: new FormControl(this.user.celular, Validators.required),
-      date: new FormControl(this.user.date, Validators.required),
-      dir: new FormControl(this.user.direccion, Validators.required),
-      gender: new FormControl(this.user.genero, Validators.required),
-      password: new FormControl(this.user.password, Validators.required),
+      name: new FormControl(this.users.first_name, Validators.required),
+      lastname: new FormControl(this.users.last_name, Validators.required),
+      ocupation: new FormControl(this.users.ocupacion, Validators.required),
+      carrer: new FormControl(this.users.carrera, Validators.required),
+      tel: new FormControl(this.users.celular, Validators.required),
+      date: new FormControl(this.users.date_nacimiento, Validators.required),
+      dir: new FormControl(this.users.direccion, Validators.required),
+      gender: new FormControl(this.users.genero, Validators.required),
+      password: new FormControl(this.users.password, Validators.required),
       confirm_password: new FormControl('', Validators.required),
     });
 
-    if(this.user.ocupacion != 'Estudiante'){
+    if(this.users.ocupacion != 'Estudiante'){
       this.show_carrers = false;
     }else{
       this.show_carrers = true;
     }
+    this.ageCalculator();
   }
 
+  ageCalculator(){
+    if(this.users.date_nacimiento){
+      const convertAge = new Date(this.users.date_nacimiento);
+      const timeDiff = Math.abs(Date.now() - convertAge.getTime());
+      this.age = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
+    }
+  }
   equalto(field_name): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} => {
     
     let input = control.value;
     
     let isValid=control.root.value[field_name]==input
-    console.log(control.root.value[field_name]);
+    //console.log(control.root.value[field_name]);
     if(!isValid){
       return { 'equalTo': {isValid} }
     }else{ 
@@ -172,7 +188,7 @@ export class PerfilPage implements OnInit {
         enterAnimation: myEnterAnimation,
         leaveAnimation: myLeaveAnimation,
         componentProps:{
-          img: this.user.photo
+          img: this.users.photo
         }
       });
     return await modal.present();
@@ -185,7 +201,7 @@ export class PerfilPage implements OnInit {
       componentProps:{
         pagina:'Denuncias',
         id:'1',
-        photo: this.user.photo
+        photo: this.users.photo 
       }
     });
   return await modal.present();

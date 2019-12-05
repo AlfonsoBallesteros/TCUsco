@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, PopoverController, ModalController, NavParams, IonInfiniteScroll} from '@ionic/angular';
+import { AlertController, PopoverController, ModalController, NavParams, IonInfiniteScroll, Events} from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-modal.component';
 import { ModalPage } from '../modal/modal.page';
-import { ActivatedRoute } from '@angular/router';
+import { Usuarios } from 'src/app/interfaces/interfaces';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-inicio', 
@@ -35,7 +36,8 @@ export class InicioPage implements OnInit {
   option: string;
   show: boolean=false;
   show_texto = true;
-  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private actRoute: ActivatedRoute) { }
+  usuario: Usuarios = {};
+  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private usuarioServices:UsuarioService) { }
 
   ngOnInit() {
     if(this.post.comentarios > 0){
@@ -48,6 +50,10 @@ export class InicioPage implements OnInit {
       this.show_texto = false;
       this.data = Array(2);
     }, 1000)
+
+    this.usuario = this.usuarioServices.getUsuario();
+    console.log(this.usuario);
+
   }
 
   doRefresh(event: any){

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { Usuarios } from 'src/app/interfaces/interfaces';
+
 
 @Component({
   selector: 'app-usuarios',
@@ -10,6 +13,7 @@ import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 export class UsuariosPage implements OnInit {
   data: any[];
   isItemAvailable = false;
+  
   usuario = 
     {
     'name': 'Juan Sebastian',
@@ -20,24 +24,43 @@ export class UsuariosPage implements OnInit {
 
   carrera: any[];
   show_texto = true;  
+  usuarios: Usuarios[]= [];
 
-  constructor(private popCtrl: PopoverController) {}
+  constructor(private popCtrl: PopoverController, private usuarioServicio: UsuarioService) {}
 
   ngOnInit() {
     setTimeout(() =>{
       this.show_texto = false;
       this.carrera = [ 'Ingenieria de software' , 'Ingenieria de petroleos', 'Lic. Matematicas'];
+
+      this.usuarioServicio.getAllUsers()
+      .subscribe( res =>{
+        for (const data of (res as any)) {
+          this.usuarios.push({
+            _id: data._id,
+            photo: data.photo,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            ocupacion: data.ocupacion,
+            carrera: data.carrera
+          });
+        }
+        console.log(this.usuarios);
+      });
     }, 1000)
   }
 
-  async denuncia(event: any){
+  async denuncia(event: any, user){
+    console.log(user)
     const pop = await this.popCtrl.create({
       component: PopinfoComponent,
       componentProps:{
         Nombre: ['Denunciar'],
         page: 'denuncias',
-        photo: this.usuario.photo,
-        persona: this.usuario.name
+        photo: user.photo,
+        persona: user.first_name,
+        apellido: user.last_name,
+        id: user._id
       },
       event: event,
       mode: 'ios',
@@ -48,7 +71,6 @@ export class UsuariosPage implements OnInit {
 
   doRefresh(event: any){
     setTimeout(() =>{
-      this.go();
       event.target.complete();
     }, 1000)
   }

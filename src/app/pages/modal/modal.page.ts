@@ -34,6 +34,7 @@ export class ModalPage implements OnInit {
   show_texto: boolean = false;
   show_comment_texto: boolean = false;
   persona: string;
+  apellido: string
   photo: string;
   option: string = 'Seleccione';
   message: string ='';
@@ -53,6 +54,8 @@ export class ModalPage implements OnInit {
     this.comment.photo = this.navParams.data.photo;
     this.photo = this.navParams.data.photo;
     this.persona = this.navParams.data.persona;
+    this.apellido = this.navParams.data.apellido;
+    console.log(this.apellido)
 
     if(this.pagina == 'Denunciar'){
       this.show_denuncias = true;

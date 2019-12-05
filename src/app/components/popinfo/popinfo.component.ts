@@ -12,6 +12,7 @@ export class PopinfoComponent implements OnInit {
   page: string;
   photo: string;
   persona: string;
+  apellido: string;
 
   show_denuncias: boolean=false;
   show_motivo: boolean=false;
@@ -25,6 +26,7 @@ export class PopinfoComponent implements OnInit {
     this.page= this.navParams.data.page;
     this.photo = this.navParams.data.photo;
     this.persona = this.navParams.data.persona;
+    this.apellido = this.navParams.data.apellido;
 
     if (this.page == 'denuncias'){
       this.show_denuncias = true;
@@ -49,7 +51,8 @@ export class PopinfoComponent implements OnInit {
       componentProps:{
         pagina: 'Denunciar',
         photo: this.photo,
-        persona: this.persona
+        persona: this.persona,
+        apellido: this.apellido
       }
     });
   return await modal.present();

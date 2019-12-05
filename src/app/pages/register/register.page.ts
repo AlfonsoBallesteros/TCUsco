@@ -3,6 +3,7 @@ import { ActionSheetController, AlertController, ToastController } from '@ionic/
 import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
 import { PasswordValidator } from '../validators/password';
 import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +28,7 @@ export class RegisterPage implements OnInit {
   registerForm: FormGroup;
   photo = '/assets/img/perfil1.jpg';
   
-  constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private toastCrtl: ToastController, private router: Router) { 
+  constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private toastCrtl: ToastController, private router: Router, private usaurioServices: UsuarioService) { 
     // paste this code, should be include those are to constructor 
     this.currentTime = new Date();
     this.year = this.currentTime.getFullYear();
@@ -94,7 +95,7 @@ export class RegisterPage implements OnInit {
     });
 
     this.registerForm = this.formCrtl.group({
-        photo: new FormControl(''),
+        photo: new FormControl(this.photo),
         name: new FormControl('', Validators.compose([
           Validators.maxLength(30),
           Validators.minLength(5),
@@ -192,17 +193,19 @@ export class RegisterPage implements OnInit {
     }
   }
 */
-  submit(values){
-    /*
-    if(this.photo == '/assets/img/perfil1.jpg'){
-      this.presentAlert();
+  async submit(values){
+    
+    if(this.registerForm.get('photo').value == '/assets/img/perfil1.jpg'){
       //this.registerForm.value['name'] = 'uri';
+      const crear = await this.usaurioServices.registro( this.registerForm.value);
+      console.log(this.registerForm.value);
+      this.toastSave();
+      this.router.navigate(["/login"]);
     }else{
       console.log(this.registerForm.value);
-    }*/
-    console.log(this.registerForm.value);
-    this.toastSave();
-    this.router.navigate(["/login"]);
+      this.presentAlert();
+      //this.router.navigate(["/login"]);
+    }
   }
 
   async switchImage() {
