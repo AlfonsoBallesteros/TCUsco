@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { DataServiceService } from 'src/app/services/data-service.service';
+import { Usuarios } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +18,8 @@ export class LoginPage implements OnInit {
   passwordIcon: string = 'eye-off';
   valido: string;
   message: string;
-  codigo='u20172161991'
-  password='Alfonso123'
+  usuario: Usuarios = {};
+  dataMenu: Object;
 
   constructor(private formCrtl: FormBuilder, private alertCrtl: AlertController, private router: Router, private toastCrtl: ToastController, private usuarioServices: UsuarioService) { }
 
@@ -27,6 +29,8 @@ export class LoginPage implements OnInit {
       codigo: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
+
+    
   }
 
   async submit(value){
@@ -35,15 +39,14 @@ export class LoginPage implements OnInit {
       let password = this.login_form.get('password').value;
       const valido =  await this.usuarioServices.login( codigo, password);
       if(valido){
-        this.router.navigate(['/inicio']);
         this.message = 'Inicio de session exitosa';
         this.toastLogin();
+        this.router.navigate(['/inicio']);
       }else{
         this.message= 'Contraseña/Usuario Incorrecto';
         this.alertLogin();
       }
-
-      /* 
+      /*
         .subscribe( res =>{ 
          this.mensaje[0] = res;
          if(this.mensaje[0].ok){
@@ -77,6 +80,7 @@ export class LoginPage implements OnInit {
       this.alertLogin();
     }
   }
+
   tooglePassword(){
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
      this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';

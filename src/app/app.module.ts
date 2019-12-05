@@ -18,6 +18,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
+import { Camera} from '@ionic-native/camera/ngx'
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +38,7 @@ import { environment } from '../environments/environment';
     SplashScreen,
     Network,
     Geolocation,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 
   ],

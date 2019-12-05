@@ -5,6 +5,7 @@ import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-
 import { ModalPage } from '../modal/modal.page';
 import { Usuarios } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { DataServiceService } from 'src/app/services/data-service.service';
 
 @Component({
   selector: 'app-inicio', 
@@ -37,7 +38,8 @@ export class InicioPage implements OnInit {
   show: boolean=false;
   show_texto = true;
   usuario: Usuarios = {};
-  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private usuarioServices:UsuarioService) { }
+  dataMenu: object;
+  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private usuarioServices:UsuarioService, private Service: DataServiceService) { }
 
   ngOnInit() {
     if(this.post.comentarios > 0){
@@ -53,7 +55,18 @@ export class InicioPage implements OnInit {
 
     this.usuario = this.usuarioServices.getUsuario();
     console.log(this.usuario);
+    this.dataPase();
 
+  }
+
+  dataPase(){
+    this.dataMenu = {
+      photo: this.usuario.photo,
+      nombre: this.usuario.first_name
+    }
+    this.Service.changeData(this.dataMenu);
+    console.log(this.dataMenu);
+    this.Service.currentData.subscribe( data => console.log(data));
   }
 
   doRefresh(event: any){

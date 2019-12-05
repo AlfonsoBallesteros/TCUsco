@@ -99,6 +99,8 @@ export class PerfilPage implements OnInit {
     ];
 
     this.edit_perfil = this.formCrtl.group({
+      _id: new FormControl(this.users._id),
+      photo: new FormControl(this.users.photo),
       name: new FormControl(this.users.first_name, Validators.required),
       lastname: new FormControl(this.users.last_name, Validators.required),
       ocupation: new FormControl(this.users.ocupacion, Validators.required),
@@ -219,16 +221,27 @@ export class PerfilPage implements OnInit {
    }
   }
 
-  Guardar(){
+   async Guardar(){
     if(this.edit_perfil.valid == true){
       let password = this.edit_perfil.get('password').value;
       let confirm = this.edit_perfil.get('confirm_password').value;
       if(password == confirm){
-        this.message = 'Edicion Exitosa';
-        this.toastSave();
-        this.edit = true;
-        this.homeColor = '1px solid #f4f5f8';
-        console.log(this.edit_perfil.value);
+        const actualizado = await this.usuarioService.actualizarUsuario( this.edit_perfil.value );
+        if(actualizado){
+          // toast con el mensaje de actualizado
+          this.message = 'Edicion Exitosa';
+          this.toastSave();
+          this.edit = true;
+          this.homeColor = '1px solid #f4f5f8';
+          console.log(this.edit_perfil.value);
+          console.log(actualizado);
+        }else{
+          
+          // toast con el error
+          this.message = 'Edicion Fallida';
+          this.toastSave();
+          this.edit = false;
+        }
       }else{
         this.message = 'Contraseña no coinciden';
         this.alertError();

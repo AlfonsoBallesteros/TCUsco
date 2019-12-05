@@ -4,6 +4,11 @@ import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractC
 import { PasswordValidator } from '../validators/password';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import {storage, initializeApp} from 'firebase';
+import { FIREBASE_CONFIG } from './firebase.config';
+
+declare var window;
 
 @Component({
   selector: 'app-register',
@@ -26,13 +31,15 @@ export class RegisterPage implements OnInit {
   currentTime = null;
   matching_passwords_group: FormGroup;
   registerForm: FormGroup;
-  photo = '/assets/img/perfil1.jpg';
+  photo: string = '/assets/img/perfil1.jpg';
+  temporal: any[];
   
-  constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private toastCrtl: ToastController, private router: Router, private usaurioServices: UsuarioService) { 
+  constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private toastCrtl: ToastController, private router: Router, private usaurioServices: UsuarioService, private camara: Camera) { 
     // paste this code, should be include those are to constructor 
     this.currentTime = new Date();
     this.year = this.currentTime.getFullYear();
     this.year = this.year - 18;
+    initializeApp(FIREBASE_CONFIG);
   }
 
   ngOnInit() {
@@ -139,7 +146,9 @@ export class RegisterPage implements OnInit {
         confirm_password: new FormControl('', Validators.compose([
             Validators.required,
             this.equalto('password')])),
-        terms: new FormControl(true, Validators.pattern('true'))
+        terms: new FormControl(true, Validators.pattern('true')),
+        rol: new FormControl('usuario'),
+        estado: new FormControl('Activo'),
       });
   } 
   ocupacion(){
@@ -215,13 +224,13 @@ export class RegisterPage implements OnInit {
         text: 'Seleccionar foto',
         icon: 'images',
         handler: () => {
-          console.log('Delete clicked');
+          this.takePhoto(this.camara.PictureSourceType.PHOTOLIBRARY)
         }
       }, {
         text: 'Tomar foto',
         icon: 'camera',
         handler: () => {
-          console.log('Share clicked');
+          this.takePhoto(this.camara.PictureSourceType.CAMERA)
         }
       }, {
         text: 'Cancel',
@@ -252,4 +261,32 @@ export class RegisterPage implements OnInit {
     });
     toast.present();
   }
+
+  async takePhoto(sourceType){
+
+    try{
+    const options: CameraOptions = {
+      quality: 60,
+      targetHeight: 600,
+      targetWidth:600,
+      destinationType: this.camara.DestinationType.DATA_URL,
+      encodingType: this.camara.EncodingType.JPEG,
+      mediaType: this.camara.MediaType.PICTURE,
+      correctOrientation: true,
+      sourceType: sourceType
+    }
+
+      const result = await this.camara.getPicture(options);
+      const image = `data:image/jpeg;base64,${result}`;
+      const id = Math.random().toString(36).substring(2);
+      const pictures = storage().ref(`img_perfil/user_${id}`);
+      pictures.putString(image, 'data_url');
+      pictures.getDownloadURL().then( url => { this.photo = url})
+
+    }catch (e){
+      console.error(e)
+    }
+  }
+     
+    
 }
