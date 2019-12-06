@@ -3,9 +3,10 @@ import { AlertController, PopoverController, ModalController, NavParams, IonInfi
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-modal.component';
 import { ModalPage } from '../modal/modal.page';
-import { Usuarios } from 'src/app/interfaces/interfaces';
+import { Usuarios, RespuestaPosts } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { DataServiceService } from 'src/app/services/data-service.service';
+import { PublicacionService } from 'src/app/services/publicacion.service';
 
 @Component({
   selector: 'app-inicio', 
@@ -39,9 +40,30 @@ export class InicioPage implements OnInit {
   show_texto = true;
   usuario: Usuarios = {};
   dataMenu: object;
-  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private usuarioServices:UsuarioService, private Service: DataServiceService) { }
+  posts: RespuestaPosts[] = []
+  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private usuarioServices:UsuarioService, private Service: DataServiceService, private postServicie: PublicacionService) { }
 
   ngOnInit() {
+    this.postServicie.getPost()
+    .subscribe( res => {
+      for (const data of (res as any )){
+        this.posts.unshift({
+          _id: data._id,
+          id_usuario: data.id_usuario['_id'],
+          photo: data.id_usuario['photo'],
+          first_name: data.id_usuario['first_name'],
+          last_name: data.id_usuario['last_name'],
+          descripcion: data.descripcion,
+          lugar: data.lugar,
+          ubicacion: data.ubicacion,
+          like: data.like,
+          createdAt: data.createdAt
+        })
+        console.log(res)
+      }
+      console.log(this.posts)
+    });
+
     if(this.post.comentarios > 0){
       this.show = true;
     }else{
@@ -124,14 +146,10 @@ export class InicioPage implements OnInit {
       component: ModalPage, 
       componentProps:{
         pagina: 'post',
-        photo: this.post.photo_uri,
-        persona: this.post.nombre
+        persona: this.usuario
       }
     });
-  modal.onDidDismiss().then((data) => {
-    this.lugar = data.data.location;
-    console.log(this.lugar)
-  });
+  modal.onDidDismiss().then( () => this.ngOnInit());
   return await modal.present();
   
   }

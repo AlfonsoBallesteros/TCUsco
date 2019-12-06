@@ -26,4 +26,24 @@ export interface Usuarios{
     password?: string; 
       
 }
+export interface RespuestaPosts {
+    _id?: string;
+    id_usuario?: string;
+    photo?: string;
+    first_name?: string;
+    last_name?: string;
+    descripcion?: string;
+    lugar?: string;
+    ubicacion?: string;
+    like?: Number;
+    createdAt?: string;
+  }
+
+export interface Post {
+    descripcion?: string;
+    ubicacion?: string;
+    id_usuario?: string;
+    lugar?: string;
+    like?: string;
+}
 

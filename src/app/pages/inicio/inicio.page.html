@@ -26,14 +26,14 @@
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-  <ion-card mode="ios" *ngFor="let item of data">
+  <ion-card mode="ios" *ngFor="let data of posts">
      <ion-item>
        <ion-buttons>
-          <img class="big-perfil" [src]="post.photo_uri" />
-          <ion-label class="space-post" color="tertiary">{{post.nombre}}</ion-label>
+          <img class="big-perfil" [src]="data.photo" />
+          <ion-label class="space-post" color="tertiary">{{data.first_name}} {{data.last_name}}</ion-label>
        </ion-buttons>
        <ion-buttons slot="end"> 
-          <ion-card-subtitle class="space-heart">{{post.like}}</ion-card-subtitle>
+          <ion-card-subtitle class="space-heart">{{data.like}}</ion-card-subtitle>
           <ion-icon name="heart"class="big-more" color="danger"></ion-icon>
           <ion-button (click)="mostrar($event)">
             <ion-icon name="more" class="more" color="tertiary"></ion-icon>
@@ -41,14 +41,14 @@
        </ion-buttons>  
      </ion-item>
       <ion-item>
-        <ion-card-subtitle>{{post.descripcion}}</ion-card-subtitle>
+        <ion-card-subtitle>{{data.descripcion}}</ion-card-subtitle>
       </ion-item>
       <ion-item>
         <ion-buttons>
-          <ion-card-subtitle slot="start" color="tertiary">{{lugar}}</ion-card-subtitle>
+          <ion-card-subtitle slot="start" color="tertiary">{{data.lugar}}</ion-card-subtitle>
         </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-card-subtitle color="tertiary">{{post.fecha}}</ion-card-subtitle>
+        <ion-buttons slot="end"> <!----->
+          <ion-datetime displayFormat="MM/DD/YYYY" value="{{data.createdAt}}" mode="ios" readonly></ion-datetime>
         </ion-buttons> 
       </ion-item>
       <ion-item>
@@ -68,7 +68,7 @@
       </ion-item>
       <ion-card-subtitle color="medium" class="coment">{{post.comentarios}} comentarios</ion-card-subtitle>
       <ion-item *ngIf="show" (click)="coment()">
-          <img class="comment" [src]="post.photo_uri"/>
+          <img class="comment" [src]="usuario.photo"/>
           <ion-item class="comment-modal" mode="ios" button>
             <ion-card-subtitle class="write-comment" color="">Comenta...</ion-card-subtitle>
           </ion-item>

@@ -325,7 +325,14 @@ export class PerfilPage implements OnInit {
           });
           console.log(url)
           this.show_photo = true;
+        }).catch((err) =>{
+          this.message = err;
+          this.alertError();
         })
+      console.log(result);
+      }).catch( err =>{
+        this.message = err;
+        this.alertError();
       })
       //pictures.getDownloadURL().then( url => { console.log(url)})//this.photo = url})
 

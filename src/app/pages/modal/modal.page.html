@@ -99,10 +99,10 @@
       <ion-card-content class="card-content-perfil">
         <ion-row>
             <ion-col size="2">
-                <img class="perfil" [src]="photo"/>
+                <img class="perfil" [src]="photo_post"/>
             </ion-col>
             <ion-col class="col-textarea" size="10">
-              <ion-label class="label-post">{{persona}}</ion-label>
+              <ion-label class="label-post">{{nombre_post}} {{apellido_post}}</ion-label>
               <ion-button class="boton-lugar" (click)="places()">
                 <ion-icon slot="start" class="color-boton-icon" name="globe"></ion-icon>
                 <ion-text class="color-boton">

@@ -55,6 +55,7 @@ export class UsuarioService {
   async guardaToken(token: string){
     this.token = token;
     await this.storage.set('token', token)
+    await this.validaToken();
   }
 
   async cargarToken(){

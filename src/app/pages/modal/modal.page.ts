@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { ModalController, NavParams, PopoverController, Platform, ToastController } from '@ionic/angular';
+import { ModalController, NavParams, PopoverController, Platform, ToastController} from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { PublicacionService } from 'src/app/services/publicacion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal',
@@ -33,6 +35,13 @@ export class ModalPage implements OnInit {
   show_post: boolean = false;
   show_texto: boolean = false;
   show_comment_texto: boolean = false;
+
+  //datos post
+  nombre_post: string;
+  apellido_post: string;
+  photo_post: string;
+  id_userPost: string;
+  //
   persona: string;
   apellido: string
   photo: string;
@@ -45,7 +54,7 @@ export class ModalPage implements OnInit {
   show_error: boolean = false;
   show_option: boolean = false;
 
-  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController, private formCrtl: FormBuilder) {
+  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController, private formCrtl: FormBuilder, private PostService: PublicacionService, private router: Router) {
    }
 
   ngOnInit() {
@@ -55,6 +64,13 @@ export class ModalPage implements OnInit {
     this.photo = this.navParams.data.photo;
     this.persona = this.navParams.data.persona;
     this.apellido = this.navParams.data.apellido;
+    //recojo data post
+    this.id_userPost = this.navParams.data.persona._id;
+    this.nombre_post = this.navParams.data.persona.first_name;
+    this.apellido_post = this.navParams.data.persona.last_name;
+    this.photo_post = this.navParams.data.persona.photo
+    console.log(this.id_userPost)
+    //
     console.log(this.apellido)
 
     if(this.pagina == 'Denunciar'){
@@ -91,8 +107,9 @@ export class ModalPage implements OnInit {
       this.crear_trayecto = this.formCrtl.group({
         descripcion: new FormControl('', Validators.required),
         lugar: new FormControl(this.lugar, Validators.required),
-        id_usuario: new FormControl(''),
+        id_usuario: new FormControl(this.id_userPost),
         ubicacion: new FormControl(''),
+        like: new FormControl(0),
       });
 
     }else if(this.pagina == 'Denuncias'){
@@ -110,7 +127,7 @@ export class ModalPage implements OnInit {
       }
        
     this.platform.ready().then(() =>{
-      this.SearchPlaces();
+      this.ubicacion();
     });
 }
 
@@ -190,15 +207,17 @@ export class ModalPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  crear_post(){
+  async crear_post(){
+    this.ubicacion();
     this.crear_trayecto.value['lugar'] = this.lugar;
     if(this.crear_trayecto.valid == true){
       if(this.crear_trayecto.value['lugar'] == 'Lugares'){
         this.show_error = true;
       }else{
+        const creado = await this.PostService.crearPost(this.crear_trayecto.value);
         this.show_error = false;
         this.modalCtrl.dismiss();
-        this.message = 'Se creo la publicacion exitosamente'
+        this.message = 'Se creo la publicacion exitosamente';
         this.toastMensaje();
       }
       console.log(this.crear_trayecto.value);
@@ -213,8 +232,20 @@ export class ModalPage implements OnInit {
       console.log(this.crear_trayecto.valid);
     }
   }
-  SearchPlaces() {
-  
+  ubicacion() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      // resp.coords.latitude
+      // resp.coords.longitude
+
+      const coords = `${ resp.coords.latitude },${ resp.coords.longitude }`;
+      console.log(coords);
+      this.crear_trayecto.patchValue({
+        ubicacion: coords
+      });
+
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
       
   }
 
