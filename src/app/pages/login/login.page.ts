@@ -42,6 +42,7 @@ export class LoginPage implements OnInit {
         this.message = 'Inicio de session exitosa';
         this.toastLogin();
         this.router.navigate(['/inicio']);
+        console.log('entra');
       }else{
         this.message= 'Contraseña/Usuario Incorrecto';
         this.alertLogin();

@@ -7,6 +7,9 @@ import { ModalPage } from '../modal/modal.page';
 import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuarios } from 'src/app/interfaces/interfaces';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { FIREBASE_CONFIG } from './firebase.config';
+import {storage, initializeApp} from 'firebase';
 
 @Component({
   selector: 'app-perfil',
@@ -29,6 +32,8 @@ export class PerfilPage implements OnInit {
   passwordIcon: string = 'eye-off';
   users: Usuarios = {};
   age:number;
+  show_photo: boolean = false;
+  new_photo: string;
 /*
   user = {
     'photo': 'https://firebasestorage.googleapis.com/v0/b/tcusco-77d95.appspot.com/o/img_perfil%2Fperfil2.jpeg?alt=media&token=526bc9ec-5416-4002-8a99-19af909615c4',
@@ -44,7 +49,9 @@ export class PerfilPage implements OnInit {
     'password': '123456789'
   }*/
 
-  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private usuarioService: UsuarioService) {}
+  constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private usuarioService: UsuarioService, private camara: Camera) {
+    initializeApp(FIREBASE_CONFIG);
+  }
 
   ngOnInit() {
     this.users = this.usuarioService.getUsuario();
@@ -96,7 +103,7 @@ export class PerfilPage implements OnInit {
       "Ingeniería Electrónica",
       "Enfermería ",
       " Medicina "
-    ];
+    ]; 
 
     this.edit_perfil = this.formCrtl.group({
       _id: new FormControl(this.users._id),
@@ -104,7 +111,7 @@ export class PerfilPage implements OnInit {
       name: new FormControl(this.users.first_name, Validators.required),
       lastname: new FormControl(this.users.last_name, Validators.required),
       ocupation: new FormControl(this.users.ocupacion, Validators.required),
-      carrer: new FormControl(this.users.carrera, Validators.required),
+      carrer: new FormControl(this.users.carrera),
       tel: new FormControl(this.users.celular, Validators.required),
       date: new FormControl(this.users.date_nacimiento, Validators.required),
       dir: new FormControl(this.users.direccion, Validators.required),
@@ -119,6 +126,7 @@ export class PerfilPage implements OnInit {
       this.show_carrers = true;
     }
     this.ageCalculator();
+    console.log('Entra a perfil')
   }
 
   ageCalculator(){
@@ -164,13 +172,22 @@ export class PerfilPage implements OnInit {
         text: 'Seleccionar foto de perfil',
         icon: 'images',
         handler: () => {
+          this.takePhoto(this.camara.PictureSourceType.PHOTOLIBRARY)
           console.log('Abrir explorador de imagines');
         }
-      }, {
+      },{
+        text: 'Tomar una foto',
+        icon: 'camera',
+        handler: () => {
+          this.takePhoto(this.camara.PictureSourceType.CAMERA)
+          console.log('Abrir la camara');
+      }
+      },{
         text: 'Ver foto de perfil',
         icon: 'contact',
         handler: () => {
           this.openImage();
+          console.log('Ver foto de perfil');
         }
       }, {
         text: 'Cancel',
@@ -239,12 +256,15 @@ export class PerfilPage implements OnInit {
           
           // toast con el error
           this.message = 'Edicion Fallida';
+          this.homeColor = '1px solid #f4f5f8';
           this.toastSave();
           this.edit = false;
+          console.log(this.edit_perfil.value);
         }
       }else{
         this.message = 'Contraseña no coinciden';
         this.alertError();
+        console.log(this.edit_perfil.value);
       }
     }else{
       if(this.veces < 1){
@@ -277,6 +297,41 @@ export class PerfilPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async takePhoto(sourceType){
+
+    try{
+    const options: CameraOptions = {
+      quality: 60,
+      targetHeight: 600,
+      targetWidth:600,
+      destinationType: this.camara.DestinationType.DATA_URL,
+      encodingType: this.camara.EncodingType.JPEG,
+      mediaType: this.camara.MediaType.PICTURE,
+      correctOrientation: true,
+      sourceType: sourceType
+    }
+
+      const result = await this.camara.getPicture(options);
+      const image = `data:image/jpeg;base64,${result}`;
+      const id = Math.random().toString(36).substring(2);
+      const pictures = storage().ref(`img_perfil/user_${id}`);
+      pictures.putString(image, 'data_url').then( (result) => {
+        pictures.getDownloadURL().then( url => { 
+          this.new_photo = url;
+          this.edit_perfil.patchValue({
+            photo: url
+          });
+          console.log(url)
+          this.show_photo = true;
+        })
+      })
+      //pictures.getDownloadURL().then( url => { console.log(url)})//this.photo = url})
+
+    }catch (e){
+      console.error(e)
+    }
   }
 
 }

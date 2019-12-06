@@ -11,7 +11,8 @@
         <ion-col size="4">
             <ion-item lines="none" class="avatar">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                 <ion-avatar>
-                    <img class="img-perfil" [src]="users.photo"/>
+                    <img *ngIf="!show_photo" class="img-perfil" [src]="users.photo"/>
+                    <img *ngIf="show_photo" class="img-perfil" [src]="new_photo"/>
                 </ion-avatar>  
             </ion-item>
         </ion-col>
