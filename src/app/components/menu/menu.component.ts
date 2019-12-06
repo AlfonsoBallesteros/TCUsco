@@ -7,6 +7,7 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { myEnterAnimation } from '../animations/enter';
 import { myLeaveAnimation } from '../animations/leave';
 import { DataServiceService } from 'src/app/services/data-service.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class MenuComponent implements OnInit {
   componentes: Observable<Componente[]>;
   data: object;
 
-  constructor(private dataService: DataService, private modalCtrl: ModalController, private service: DataServiceService) { 
+  constructor(private dataService: DataService, private modalCtrl: ModalController, private service: DataServiceService, private userService: UsuarioService) { 
     this.service.currentData.subscribe( data => this.data = data)
     console.log(this.data); 
   }
@@ -39,6 +40,10 @@ export class MenuComponent implements OnInit {
         }
       });
     return await modal.present();
+  }
+
+  logout(){
+    this.userService.logout();
   }
 
   ngOnInit() {

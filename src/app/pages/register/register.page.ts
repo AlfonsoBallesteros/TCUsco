@@ -4,7 +4,7 @@ import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractC
 import { PasswordValidator } from '../validators/password';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import {storage, initializeApp} from 'firebase';
 import { FIREBASE_CONFIG } from './firebase.config';
 
@@ -31,8 +31,9 @@ export class RegisterPage implements OnInit {
   currentTime = null;
   matching_passwords_group: FormGroup;
   registerForm: FormGroup;
-  photo: string = '/assets/img/perfil1.jpg';
-  temporal: any[];
+  photo: string; 
+  show_newfoto: boolean = false;
+  new_photo: [];
   
   constructor(private actioCrtl: ActionSheetController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private toastCrtl: ToastController, private router: Router, private usaurioServices: UsuarioService, private camara: Camera) { 
     // paste this code, should be include those are to constructor 
@@ -43,6 +44,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.photo = '/assets/img/perfil1.jpg';
     this.genders = [
       "Masculino",
       "Femenino",
@@ -102,7 +104,7 @@ export class RegisterPage implements OnInit {
     });
 
     this.registerForm = this.formCrtl.group({
-        photo: new FormControl(this.photo),
+        photo: new FormControl(''),
         name: new FormControl('', Validators.compose([
           Validators.maxLength(30),
           Validators.minLength(5),
@@ -204,8 +206,9 @@ export class RegisterPage implements OnInit {
 */
   async submit(values){
     
-    if(this.registerForm.get('photo').value == '/assets/img/perfil1.jpg'){
+    if(this.show_newfoto){
       //this.registerForm.value['name'] = 'uri';
+      console.log(this.registerForm.value);
       const crear = await this.usaurioServices.registro( this.registerForm.value);
       console.log(this.registerForm.value);
       this.toastSave();
@@ -224,13 +227,15 @@ export class RegisterPage implements OnInit {
         text: 'Seleccionar foto',
         icon: 'images',
         handler: () => {
-          this.takePhoto(this.camara.PictureSourceType.PHOTOLIBRARY)
+          this.takePhoto(this.camara.PictureSourceType.PHOTOLIBRARY),
+          console.log('escoge image')
         }
       }, {
         text: 'Tomar foto',
         icon: 'camera',
         handler: () => {
-          this.takePhoto(this.camara.PictureSourceType.CAMERA)
+          this.takePhoto(this.camara.PictureSourceType.CAMERA),
+          console.log('toma Foto')
         }
       }, {
         text: 'Cancel',
@@ -280,8 +285,17 @@ export class RegisterPage implements OnInit {
       const image = `data:image/jpeg;base64,${result}`;
       const id = Math.random().toString(36).substring(2);
       const pictures = storage().ref(`img_perfil/user_${id}`);
-      pictures.putString(image, 'data_url');
-      pictures.getDownloadURL().then( url => { this.photo = url})
+      pictures.putString(image, 'data_url').then( (result) => {
+        pictures.getDownloadURL().then( url => { 
+          this.new_photo = url;
+          this.show_newfoto = true;
+          this.registerForm.patchValue({
+            photo: url
+          });
+          console.log(url)
+        })
+      })
+      //pictures.getDownloadURL().then( url => { console.log(url)})//this.photo = url})
 
     }catch (e){
       console.error(e)

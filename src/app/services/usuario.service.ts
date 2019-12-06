@@ -114,6 +114,13 @@ export class UsuarioService {
     })
   }
 
+  logout() {
+    this.token   = null;
+    this.usuario = null;
+    this.storage.clear();
+    this.NavCrtl.navigateRoot('/login', { animated: true });
+  }
+
   getAllUsers(){
 
     return this.http.get<Usuarios>(`${ URL }/api/users`);
