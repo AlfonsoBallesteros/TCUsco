@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { ModalController, NavParams, PopoverController, Platform, ToastController} from '@ionic/angular';
+import { ModalController, NavParams, PopoverController, Platform, ToastController, NavController} from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PublicacionService } from 'src/app/services/publicacion.service';
 import { Router } from '@angular/router';
+import { ComentarioService } from 'src/app/services/comentario.service';
+import { Comentarios } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-modal',
@@ -42,6 +44,12 @@ export class ModalPage implements OnInit {
   photo_post: string;
   id_userPost: string;
   //
+  //datos para comentario
+  id_post: string;
+  //
+  //datos para listar denuncias
+  rol_userDenuncia: string;
+  //
   persona: string;
   apellido: string
   photo: string;
@@ -54,7 +62,9 @@ export class ModalPage implements OnInit {
   show_error: boolean = false;
   show_option: boolean = false;
 
-  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController, private formCrtl: FormBuilder, private PostService: PublicacionService, private router: Router) {
+  comentario: Comentarios[] = [];
+
+  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController, private formCrtl: FormBuilder, private PostService: PublicacionService, private router: Router, private comentService: ComentarioService, private navCrtl: NavController) {
    }
 
   ngOnInit() {
@@ -69,9 +79,14 @@ export class ModalPage implements OnInit {
     this.nombre_post = this.navParams.data.persona.first_name;
     this.apellido_post = this.navParams.data.persona.last_name;
     this.photo_post = this.navParams.data.persona.photo
-    console.log(this.id_userPost)
+    //Recojo data para el commentario
+    this.id_post = this.navParams.data.post;
     //
-    console.log(this.apellido)
+    //Recojo data perfil para las denuncias del usuarios
+    this.rol_userDenuncia = this.navParams.data.persona.rol;
+    //
+    console.log(this.id_post)
+    //
 
     if(this.pagina == 'Denunciar'){
       this.show_denuncias = true;
@@ -95,8 +110,21 @@ export class ModalPage implements OnInit {
       
       this.crear_comentario = this.formCrtl.group({
         descripcion: new FormControl('', Validators.required),
-        id_publicacion: new FormControl(''),
-        id_usuario: new FormControl(''),
+        id_post: new FormControl(this.id_post),
+        id_usuario: new FormControl(this.id_userPost),
+      });
+      this.comentService.getComment(this.id_post)
+      .subscribe( res => {
+        for (const data of (res as any )){
+          this.comentario.unshift({
+            descripcion: data.descripcion,
+            id_usuario: data.id_usuario,
+            photo: data.id_usuario.photo,
+            first_name: data.id_usuario.first_name,
+            last_name: data.id_usuario.last_name
+          })
+        }
+        console.log(this.comentario)
       });
 
     }else if (this.pagina == "post"){
@@ -120,6 +148,11 @@ export class ModalPage implements OnInit {
   
   ionViewDidLoad(): void{
   }
+
+  ngOnDestroy(){
+    this.comentario = []
+    
+  }
   ionViewDidEnter(){
    
     if(this.pagina == "post"){
@@ -127,7 +160,7 @@ export class ModalPage implements OnInit {
       }
        
     this.platform.ready().then(() =>{
-      this.ubicacion();
+      //this.ubicacion();
     });
 }
 
@@ -192,8 +225,11 @@ export class ModalPage implements OnInit {
 
   save_comentarios(){
     if(this.crear_comentario.valid){
+      const creado = this.comentService.postComment(this.crear_comentario.value);
       console.log(this.crear_comentario.value)
       this.crear_comentario.reset();
+      this.ngOnDestroy();
+      this.ngOnInit();
     }
   }
 
@@ -266,6 +302,24 @@ export class ModalPage implements OnInit {
       mode:"md"
     });
     toast.present();
+  }
+
+  refresh(){
+    this.ngOnDestroy();
+    this.comentService.getComment(this.id_post)
+      .subscribe( res => {
+        for (const data of (res as any )){
+          this.comentario.unshift({
+            descripcion: data.descripcion,
+            id_usuario: data.id_usuario,
+            photo: data.id_usuario.photo,
+            first_name: data.id_usuario.first_name,
+            last_name: data.id_usuario.last_name
+          })
+        }
+        console.log(this.comentario)
+      });
+
   }
 }
 

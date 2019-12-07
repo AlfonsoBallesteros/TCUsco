@@ -12,6 +12,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card mode="ios" button>
     <ion-card-header class="crear"> 
       <ion-label color="dark">Crear Trayecto</ion-label>
@@ -23,9 +26,6 @@
       </ion-buttons>
     </ion-card-content>
   </ion-card>
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
   <ion-card mode="ios" *ngFor="let data of posts">
      <ion-item>
        <ion-buttons>
@@ -59,15 +59,15 @@
           </ion-button>
             
           </ion-buttons> 
-        <ion-buttons slot="end" (click)="coment()">
+        <ion-buttons slot="end" (click)="coment(data._id)">
             <ion-button mode="ios">
               <ion-icon name="chatbubbles" class="big-more" color="medium"></ion-icon>
               <ion-card-subtitle class="letter">Comentar</ion-card-subtitle>
             </ion-button> 
         </ion-buttons> 
       </ion-item>
-      <ion-card-subtitle color="medium" class="coment">{{post.comentarios}} comentarios</ion-card-subtitle>
-      <ion-item *ngIf="show" (click)="coment()">
+      <ion-card-subtitle *ngIf="data.show" color="medium" class="coment">{{data.comentario}} comentarios</ion-card-subtitle>
+      <ion-item *ngIf="data.show" (click)="coment(data._id)">
           <img class="comment" [src]="usuario.photo"/>
           <ion-item class="comment-modal" mode="ios" button>
             <ion-card-subtitle class="write-comment" color="">Comenta...</ion-card-subtitle>

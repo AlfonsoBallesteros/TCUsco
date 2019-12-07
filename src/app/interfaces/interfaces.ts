@@ -23,7 +23,10 @@ export interface Usuarios{
     ocupacion?:string
     carrera?: string;
     codigo?: string; 
-    password?: string; 
+    password?: string;
+    rol?: string;
+    like?: number;
+    estado?: string; 
       
 }
 export interface RespuestaPosts {
@@ -35,8 +38,10 @@ export interface RespuestaPosts {
     descripcion?: string;
     lugar?: string;
     ubicacion?: string;
-    like?: Number;
+    like?: number;
     createdAt?: string;
+    comentario?: any;
+    show?: boolean;
   }
 
 export interface Post {
@@ -46,4 +51,20 @@ export interface Post {
     lugar?: string;
     like?: string;
 }
+
+export interface Comentarios {
+    descripcion?: string;
+    id_usuario?: string;
+    photo?: string;
+    first_name?: string;
+    last_name?: string;
+    id_post?: string;
+}
+
+export interface Comentario {
+    descripcion?: string;
+    id_usuario?: string;
+    id_post?: string;
+}
+
 

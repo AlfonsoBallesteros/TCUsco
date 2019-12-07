@@ -4,9 +4,9 @@ import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn, AbstractC
 import { PasswordValidator } from '../validators/password';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
-import {storage, initializeApp} from 'firebase';
-import { FIREBASE_CONFIG } from './firebase.config';
+import { Camera, CameraOptions} from '@ionic-native/camera/ngx';
+import {storage} from 'firebase';
+//import { FIREBASE_CONFIG } from './firebase.config';
 
 declare var window;
 
@@ -40,7 +40,6 @@ export class RegisterPage implements OnInit {
     this.currentTime = new Date();
     this.year = this.currentTime.getFullYear();
     this.year = this.year - 18;
-    initializeApp(FIREBASE_CONFIG);
   }
 
   ngOnInit() {
@@ -151,6 +150,7 @@ export class RegisterPage implements OnInit {
         terms: new FormControl(true, Validators.pattern('true')),
         rol: new FormControl('usuario'),
         estado: new FormControl('Activo'),
+        like: new FormControl(0),
       });
   } 
   ocupacion(){

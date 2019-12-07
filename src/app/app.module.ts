@@ -19,8 +19,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { Camera} from '@ionic-native/camera/ngx'
+import { initializeApp, storage } from 'firebase';
+import { FIREBASE_CONFIG } from './firebase.config';
 
-
+initializeApp(FIREBASE_CONFIG);
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

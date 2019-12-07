@@ -13,6 +13,7 @@ import { Usuarios } from 'src/app/interfaces/interfaces';
 export class UsuariosPage implements OnInit {
   data: any[];
   isItemAvailable = false;
+  data_texto: any[] = Array(10);
   
   usuario = 
     {
@@ -24,7 +25,10 @@ export class UsuariosPage implements OnInit {
 
   carrera: any[];
   show_texto = true;  
-  usuarios: Usuarios[]= [];
+  usuarios: any[]= [];
+  user: Usuarios = {};
+  itemBuscar: any[];
+  filtroBuscar: string = '';
 
   constructor(private popCtrl: PopoverController, private usuarioServicio: UsuarioService) {}
 
@@ -32,22 +36,25 @@ export class UsuariosPage implements OnInit {
     setTimeout(() =>{
       this.show_texto = false;
       this.carrera = [ 'Ingenieria de software' , 'Ingenieria de petroleos', 'Lic. Matematicas'];
-
       this.usuarioServicio.getAllUsers()
       .subscribe( res =>{
         for (const data of (res as any)) {
           this.usuarios.push({
             _id: data._id,
             photo: data.photo,
-            first_name: data.first_name,
-            last_name: data.last_name,
+            full_name: data.first_name + ' ' + data.last_name,
             ocupacion: data.ocupacion,
-            carrera: data.carrera
+            carrera: data.carrera,
+            like: data.like
           });
         }
         console.log(this.usuarios);
+        
       });
     }, 1000)
+    this.usuarioInitializer();
+    this.user = this.usuarioServicio.getUsuario();
+    console.log(this.user);
   }
 
   async denuncia(event: any, user){
@@ -69,10 +76,32 @@ export class UsuariosPage implements OnInit {
     return await pop.present();
   }
 
+  usuarioInitializer(){
+    this.itemBuscar = this.usuarios;
+  }
+
   doRefresh(event: any){
     setTimeout(() =>{
       event.target.complete();
     }, 1000)
+  }
+
+  buscar(event){
+    this.usuarioInitializer();
+    const val = event.target.value;
+
+    if (!val) {
+      return;
+    }
+
+    this.itemBuscar = this.itemBuscar.filter(data => {
+      if (data.full_name && val) {
+        if (data.full_name.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+          return true;
+        }
+        return false;
+      }
+    });
   }
 
   go(){

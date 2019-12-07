@@ -16,7 +16,8 @@ const routes: Routes = [
   },
   {
     path: 'usuarios',
-    loadChildren: () => import('./pages/usuarios/usuarios.module').then( m => m.UsuariosPageModule)
+    loadChildren: () => import('./pages/usuarios/usuarios.module').then( m => m.UsuariosPageModule),
+    canLoad: [UsuarioGuard]
   },
   {
     path: 'modal',

@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, PopoverController, ModalController, NavParams, IonInfiniteScroll, Events} from '@ionic/angular';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { AlertController, PopoverController, ModalController, NavParams, IonInfiniteScroll, Events, NavController} from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { PreviewModalComponent } from 'src/app/components/preview-modal/preview-modal.component';
 import { ModalPage } from '../modal/modal.page';
@@ -7,6 +7,7 @@ import { Usuarios, RespuestaPosts } from 'src/app/interfaces/interfaces';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { DataServiceService } from 'src/app/services/data-service.service';
 import { PublicacionService } from 'src/app/services/publicacion.service';
+import { ComentarioService } from 'src/app/services/comentario.service';
 
 @Component({
   selector: 'app-inicio', 
@@ -31,19 +32,26 @@ export class InicioPage implements OnInit {
     'like': 8,
     'comentarios': 5
   }
+  contador: number = 0;
   public nav = NavParams;
   lugar: string;
   colorHeart: string = "medium";  
   count: number = 1;  
   option: string;
-  show: boolean=false;
+  show: boolean = true;
   show_texto = true;
   usuario: Usuarios = {};
   dataMenu: object;
-  posts: RespuestaPosts[] = []
-  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private usuarioServices:UsuarioService, private Service: DataServiceService, private postServicie: PublicacionService) { }
+  posts: RespuestaPosts[] = [];
+  mySubscription: any;
+  constructor(public alertController: AlertController, private popCrtl: PopoverController, private modalCrtl: ModalController,private usuarioServices:UsuarioService, private Service: DataServiceService, private postServicie: PublicacionService, private comment: ComentarioService, private navCrtl: NavController) { 
+  }
 
   ngOnInit() {
+
+    
+    //this.loadUsers();
+    setTimeout(() =>{
     this.postServicie.getPost()
     .subscribe( res => {
       for (const data of (res as any )){
@@ -57,28 +65,48 @@ export class InicioPage implements OnInit {
           lugar: data.lugar,
           ubicacion: data.ubicacion,
           like: data.like,
-          createdAt: data.createdAt
+          createdAt: data.createdAt,
         })
-        console.log(res)
       }
       console.log(this.posts)
+      this.contador = this.posts.length;
+      console.log(this.contador)
+      for(let i in this.posts){
+      this.comment.getCount(this.posts[i]._id)
+        .subscribe( result => {
+          this.posts[i].comentario = result;
+          if(this.posts[i].comentario > 0){
+            this.posts[i].show = true
+          }else{
+            this.posts[i].show = false
+          }
+        });
+      }
     });
-
-    if(this.post.comentarios > 0){
-      this.show = true;
-    }else{
-      this.show = false;
-    }
-    //this.loadUsers();
-    setTimeout(() =>{
       this.show_texto = false;
       this.data = Array(2);
     }, 1000)
 
+    
+
+  }
+
+  ionViewWillEnter() {
+    
+  }
+  
+  ionViewDidEnter(){
     this.usuario = this.usuarioServices.getUsuario();
     console.log(this.usuario);
     this.dataPase();
+    //this.comment.getCount(this.posts['_id'])
+    
+  }
 
+  ngOnDestroy(){
+    if (this.posts) {
+      this.posts = [];
+    }
   }
 
   dataPase(){
@@ -91,12 +119,53 @@ export class InicioPage implements OnInit {
     this.Service.currentData.subscribe( data => console.log(data));
   }
 
-  doRefresh(event: any){
+  doRefresh(event?){
+    this.actualiza(event);
+    this.posts = [];
+    
+    /*
     setTimeout(() =>{
       this.go();
       event.target.complete();
-    }, 10000)
+    }, 100)*/
   }
+  actualiza(event?){
+  setTimeout(() =>{
+    event.target.complete();
+    this.postServicie.getPost()
+    .subscribe( res => {
+      for (const data of (res as any )){
+        this.posts.unshift({
+          _id: data._id,
+          id_usuario: data.id_usuario['_id'],
+          photo: data.id_usuario['photo'],
+          first_name: data.id_usuario['first_name'],
+          last_name: data.id_usuario['last_name'],
+          descripcion: data.descripcion,
+          lugar: data.lugar,
+          ubicacion: data.ubicacion,
+          like: data.like,
+          createdAt: data.createdAt,
+        })
+      }
+      console.log(this.posts)
+      this.contador = this.posts.length;
+      console.log(this.contador)
+      for(let i in this.posts){
+      this.comment.getCount(this.posts[i]._id)
+        .subscribe( result => {
+          this.posts[i].comentario = result;
+          if(this.posts[i].comentario > 0){
+            this.posts[i].show = true
+          }else{
+            this.posts[i].show = false
+          }
+        });
+      }
+    });
+  }, 800)
+  }
+
   go(){
     this.data.length++;
   }
@@ -116,15 +185,19 @@ export class InicioPage implements OnInit {
 
     return await pop.present();
   }
-  async coment() {
+  async coment(id) {
+    this.ngOnDestroy
+    console.log(id);
     let modal = await this.modalCrtl.create({
       component: ModalPage,
       mode: 'ios',
       componentProps:{
         pagina: 'comentario',
-        photo: this.post.photo_uri
+        persona: this.usuario,
+        post: id
       }
     });
+  modal.onDidDismiss().then( () => this.Refresh());
   return await modal.present();
   }
   
@@ -149,9 +222,44 @@ export class InicioPage implements OnInit {
         persona: this.usuario
       }
     });
-  modal.onDidDismiss().then( () => this.ngOnInit());
+  modal.onDidDismiss().then( () => this.Refresh());
   return await modal.present();
   
+  }
+
+  Refresh(){
+    this.ngOnDestroy();
+    this.postServicie.getPost()
+    .subscribe( res => {
+      for (const data of (res as any )){
+        this.posts.unshift({
+          _id: data._id, 
+          id_usuario: data.id_usuario['_id'],
+          photo: data.id_usuario['photo'],
+          first_name: data.id_usuario['first_name'],
+          last_name: data.id_usuario['last_name'],
+          descripcion: data.descripcion,
+          lugar: data.lugar,
+          ubicacion: data.ubicacion,
+          like: data.like,
+          createdAt: data.createdAt,
+        })
+      }
+      console.log(this.posts)
+      this.contador = this.posts.length;
+      console.log(this.contador)
+      for(let i in this.posts){
+      this.comment.getCount(this.posts[i]._id)
+        .subscribe( result => {
+          this.posts[i].comentario = result;
+          if(this.posts[i].comentario > 0){
+            this.posts[i].show = true
+          }else{
+            this.posts[i].show = false
+          }
+        });
+      }
+    });
   }
 
   loadUsers(event?){

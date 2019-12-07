@@ -43,6 +43,7 @@ export class LoginPage implements OnInit {
         this.toastLogin();
         this.router.navigate(['/inicio']);
         console.log('entra');
+        this.login_form.reset();
       }else{
         this.message= 'Contraseña/Usuario Incorrecto';
         this.alertLogin();

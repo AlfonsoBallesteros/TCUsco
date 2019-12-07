@@ -8,8 +8,8 @@ import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl, Valid
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuarios } from 'src/app/interfaces/interfaces';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { FIREBASE_CONFIG } from './firebase.config';
-import {storage, initializeApp} from 'firebase';
+//import { FIREBASE_CONFIG } from './firebase.config';
+import {storage } from 'firebase';
 
 @Component({
   selector: 'app-perfil',
@@ -50,7 +50,7 @@ export class PerfilPage implements OnInit {
   }*/
 
   constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private usuarioService: UsuarioService, private camara: Camera) {
-    initializeApp(FIREBASE_CONFIG);
+
   }
 
   ngOnInit() {
@@ -219,8 +219,7 @@ export class PerfilPage implements OnInit {
       mode:'ios',
       componentProps:{
         pagina:'Denuncias',
-        id:'1',
-        photo: this.users.photo 
+        persona: this.users
       }
     });
   return await modal.present();
