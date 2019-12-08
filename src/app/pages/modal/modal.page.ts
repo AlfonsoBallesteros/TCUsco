@@ -6,7 +6,8 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { PublicacionService } from 'src/app/services/publicacion.service';
 import { Router } from '@angular/router';
 import { ComentarioService } from 'src/app/services/comentario.service';
-import { Comentarios } from 'src/app/interfaces/interfaces';
+import { Comentarios, Denuncia, listDenuncias } from 'src/app/interfaces/interfaces';
+import { DenunciaService } from 'src/app/services/denuncia.service';
 
 @Component({
   selector: 'app-modal',
@@ -33,10 +34,12 @@ export class ModalPage implements OnInit {
   pagina: string;
   show_lista: boolean = false;
   show_denuncias: boolean = false;
+  show_denunciarUser: boolean = false
   show_comment: boolean = false;
   show_post: boolean = false;
   show_texto: boolean = false;
   show_comment_texto: boolean = false;
+  show_rol: boolean = false;
 
   //datos post
   nombre_post: string;
@@ -49,10 +52,16 @@ export class ModalPage implements OnInit {
   //
   //datos para listar denuncias
   rol_userDenuncia: string;
+  id_userBad: string;
+  usuario:string;
   //
+  id_bad: string;
   persona: string;
+  nombre: string;
   apellido: string
   photo: string;
+  id_user: string;
+  ///
   option: string = 'Seleccione';
   message: string ='';
 
@@ -64,16 +73,18 @@ export class ModalPage implements OnInit {
 
   comentario: Comentarios[] = [];
 
-  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController, private formCrtl: FormBuilder, private PostService: PublicacionService, private router: Router, private comentService: ComentarioService, private navCrtl: NavController) {
+  denuncias: any[] = []
+
+  constructor(private modalCtrl: ModalController, private navParams: NavParams, private popCrtl: PopoverController, public platform: Platform, public zone: NgZone, public geolocation: Geolocation, private toastCrtl: ToastController, private formCrtl: FormBuilder, private PostService: PublicacionService, private router: Router, private comentService: ComentarioService, private navCrtl: NavController, private denuncia: DenunciaService) {
    }
 
   ngOnInit() {
     console.log(this.navParams);
     this.pagina = this.navParams.data.pagina;
     this.comment.photo = this.navParams.data.photo;
-    this.photo = this.navParams.data.photo;
-    this.persona = this.navParams.data.persona;
-    this.apellido = this.navParams.data.apellido;
+    //
+  
+    this.persona = this.navParams.data.persona._id;
     //recojo data post
     this.id_userPost = this.navParams.data.persona._id;
     this.nombre_post = this.navParams.data.persona.first_name;
@@ -84,20 +95,40 @@ export class ModalPage implements OnInit {
     //
     //Recojo data perfil para las denuncias del usuarios
     this.rol_userDenuncia = this.navParams.data.persona.rol;
+    this.id_userBad = this.navParams.data.persona._id;
     //
+
     console.log(this.id_post)
     //
 
     if(this.pagina == 'Denunciar'){
+      this.id_bad = this.navParams.data.post.id_usuario;
+      this.photo = this.navParams.data.post.photo;
+      this.nombre = this.navParams.data.post.first_name;
+      this.apellido = this.navParams.data.post.last_name;
       this.show_denuncias = true;
 
       this.crear_denuncia = this.formCrtl.group({
         descripcion: new FormControl('', Validators.required),
         motivo: new FormControl(this.option, Validators.required),
-        id_usuario: new FormControl(''),
-        id_usuario_victima: new FormControl(''),
-        id_publicacion: new FormControl(''),
+        id_usuario: new FormControl(this.persona),
+        id_userBad: new FormControl(this.id_bad),
       });
+      console.log(this.crear_denuncia.value);
+
+    }else if(this.pagina == 'DenunciarUser'){
+      this.id_user = this.navParams.data.persona;
+      this.id_userBad = this.navParams.data.id_bad;
+      this.photo = this.navParams.data.photo;
+      this.nombre = this.navParams.data.nombre;
+      this.show_denuncias = true;
+      this.crear_denuncia = this.formCrtl.group({
+        descripcion: new FormControl('', Validators.required),
+        motivo: new FormControl(this.option, Validators.required),
+        id_usuario: new FormControl(this.id_user),
+        id_userBad: new FormControl(this.id_userBad),
+      });
+      console.log(this.crear_denuncia.value);
 
     }else if(this.pagina == 'comentario'){
       this.show_comment = true;
@@ -106,7 +137,7 @@ export class ModalPage implements OnInit {
         this.data = Array(20);
         this.show_texto = false;
         this.show_comment_texto = true;
-      }, 1000)
+      }, 500)
       
       this.crear_comentario = this.formCrtl.group({
         descripcion: new FormControl('', Validators.required),
@@ -141,12 +172,42 @@ export class ModalPage implements OnInit {
       });
 
     }else if(this.pagina == 'Denuncias'){
+      this.usuario = this.navParams.data.user;
       this.show_lista = true;
       this.data = Array(10);
+      if(this.usuario){
+        this.show_rol = true;
+      }
+      this.denuncia.getDenuncias(this.id_userBad)
+      .subscribe( res =>{
+        for (const data of (res as any )){
+          this.denuncias.unshift({
+            descripcion: data.descripcion,
+            id_usuario: data.id_usuario,
+            photo: data.id_usuario.photo,
+            full_name: data.id_usuario.first_name + ' ' + data.id_usuario.last_name
+          })
+        }
+        console.log(this.denuncias);
+      })
+      
     }
   }
   
   ionViewDidLoad(): void{
+    this.comentService.getComment(this.id_post)
+      .subscribe( res => {
+        for (const data of (res as any )){
+          this.comentario.unshift({
+            descripcion: data.descripcion,
+            id_usuario: data.id_usuario,
+            photo: data.id_usuario.photo,
+            first_name: data.id_usuario.first_name,
+            last_name: data.id_usuario.last_name
+          })
+        }
+        console.log(this.comentario)
+      });
   }
 
   ngOnDestroy(){
@@ -206,6 +267,7 @@ export class ModalPage implements OnInit {
       if(this.crear_denuncia.value['motivo'] == 'Seleccione'){
         this.show_option = true;
       }else{
+        const denuncia = this.denuncia.postDenuncias(this.crear_denuncia.value);
         this.show_option = false;
         console.log(this.crear_denuncia.value);
         this.modalCtrl.dismiss();
@@ -229,7 +291,7 @@ export class ModalPage implements OnInit {
       console.log(this.crear_comentario.value)
       this.crear_comentario.reset();
       this.ngOnDestroy();
-      this.ngOnInit();
+      this.ionViewDidLoad();
     }
   }
 

@@ -67,4 +67,21 @@ export interface Comentario {
     id_post?: string;
 }
 
+export interface listDenuncias {
+    id_usuario?: string;
+    photo?: string;
+    first_name?: string;
+    last_name?: string;
+    descripcion?: string;
+}
+
+export interface Denuncia{
+    id_usuario?: string;
+    id_userBad?: string;
+    descripcion?: string;
+    motivo?: string;
+}
+
+
+
 

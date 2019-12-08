@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'http://localhost:4000'
+  url: 'https://tcusco2019.herokuapp.com'
 };

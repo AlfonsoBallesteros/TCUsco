@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://192.168.0.11:4000'
+  url: 'https://tcusco2019.herokuapp.com'
 };
 
 /*

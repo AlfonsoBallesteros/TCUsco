@@ -10,10 +10,15 @@ export class PopinfoComponent implements OnInit {
 
   items: [];
   page: string;
-  photo: string;
-  persona: string;
-  apellido: string;
+  post: any[];
+  persona: any[];
 
+  photo: string;
+  nombre: string;
+  id_bad: string;
+  id: string;
+
+  show_denunciasUser: boolean = false;
   show_denuncias: boolean=false;
   show_motivo: boolean=false;
   show_places: boolean=false;
@@ -24,9 +29,8 @@ export class PopinfoComponent implements OnInit {
     console.table(this.navParams);
     this.items = this.navParams.data.Nombre;
     this.page= this.navParams.data.page;
-    this.photo = this.navParams.data.photo;
+    this.post = this.navParams.data.post;
     this.persona = this.navParams.data.persona;
-    this.apellido = this.navParams.data.apellido;
 
     if (this.page == 'denuncias'){
       this.show_denuncias = true;
@@ -35,6 +39,12 @@ export class PopinfoComponent implements OnInit {
     }else if(this.page == "places"){
       this.show_places = true;
       console.log(this.items);
+    }else if(this.page == 'denuncias_user'){
+      this.nombre = this.navParams.data.persona;
+      this.photo = this.navParams.data.photo;
+      this.id_bad = this.navParams.data.id_bad;
+      this.id = this.navParams.data.id._id;
+      this.show_denunciasUser = true;
     }
   }
 
@@ -50,12 +60,26 @@ export class PopinfoComponent implements OnInit {
       component: ModalPage, 
       componentProps:{
         pagina: 'Denunciar',
-        photo: this.photo,
         persona: this.persona,
-        apellido: this.apellido
+        post: this.post
       }
     });
   return await modal.present();
+}
+
+async openModalUser(){
+  this.popCrtl.dismiss();
+  let modal = await this.modalCtrl.create({
+    component: ModalPage, 
+    componentProps:{
+      pagina: 'DenunciarUser',
+      photo: this.photo,
+      nombre: this.nombre,
+      id_bad: this.id_bad,
+      persona: this.id
+    }
+  });
+return await modal.present();
 }
 
   places( valor: number){

@@ -3,6 +3,7 @@ import { PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuarios } from 'src/app/interfaces/interfaces';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class UsuariosPage implements OnInit {
   itemBuscar: any[];
   filtroBuscar: string = '';
 
-  constructor(private popCtrl: PopoverController, private usuarioServicio: UsuarioService) {}
+  constructor(private popCtrl: PopoverController, private usuarioServicio: UsuarioService, private router: Router) {}
 
   ngOnInit() {
     setTimeout(() =>{
@@ -63,11 +64,11 @@ export class UsuariosPage implements OnInit {
       component: PopinfoComponent,
       componentProps:{
         Nombre: ['Denunciar'],
-        page: 'denuncias',
+        page: 'denuncias_user',
         photo: user.photo,
-        persona: user.first_name,
-        apellido: user.last_name,
-        id: user._id
+        persona: user.full_name,
+        id_bad: user._id,
+        id: this.user
       },
       event: event,
       mode: 'ios',
@@ -84,6 +85,10 @@ export class UsuariosPage implements OnInit {
     setTimeout(() =>{
       event.target.complete();
     }, 1000)
+  }
+
+  perfil_usuario(user){
+    this.router.navigate(['/perfil-user/', user._id])
   }
 
   buscar(event){

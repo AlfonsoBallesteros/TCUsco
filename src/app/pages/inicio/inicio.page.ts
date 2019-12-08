@@ -84,8 +84,8 @@ export class InicioPage implements OnInit {
       }
     });
       this.show_texto = false;
-      this.data = Array(2);
-    }, 1000)
+      //this.data = Array(2);
+    }, 500)
 
     
 
@@ -120,64 +120,28 @@ export class InicioPage implements OnInit {
   }
 
   doRefresh(event?){
-    this.actualiza(event);
-    this.posts = [];
-    
+    this.ngOnDestroy();
+    this.show_texto = true;
+    this.ngOnInit();
+    event.target.complete();
     /*
     setTimeout(() =>{
       this.go();
       event.target.complete();
     }, 100)*/
   }
-  actualiza(event?){
-  setTimeout(() =>{
-    event.target.complete();
-    this.postServicie.getPost()
-    .subscribe( res => {
-      for (const data of (res as any )){
-        this.posts.unshift({
-          _id: data._id,
-          id_usuario: data.id_usuario['_id'],
-          photo: data.id_usuario['photo'],
-          first_name: data.id_usuario['first_name'],
-          last_name: data.id_usuario['last_name'],
-          descripcion: data.descripcion,
-          lugar: data.lugar,
-          ubicacion: data.ubicacion,
-          like: data.like,
-          createdAt: data.createdAt,
-        })
-      }
-      console.log(this.posts)
-      this.contador = this.posts.length;
-      console.log(this.contador)
-      for(let i in this.posts){
-      this.comment.getCount(this.posts[i]._id)
-        .subscribe( result => {
-          this.posts[i].comentario = result;
-          if(this.posts[i].comentario > 0){
-            this.posts[i].show = true
-          }else{
-            this.posts[i].show = false
-          }
-        });
-      }
-    });
-  }, 800)
-  }
-
   go(){
     this.data.length++;
   }
 
-  async mostrar( event: any ){
+  async mostrar( event: any, data){
     const pop = await this.popCrtl.create({
       component: PopinfoComponent,
       componentProps:{
         Nombre: ['Denunciar'],
         page: 'denuncias',
-        photo: this.post.photo_uri,
-        persona: this.post.nombre
+        persona: this.usuario,
+        post: data
       },
       event: event,
       mode: 'ios',
@@ -229,37 +193,8 @@ export class InicioPage implements OnInit {
 
   Refresh(){
     this.ngOnDestroy();
-    this.postServicie.getPost()
-    .subscribe( res => {
-      for (const data of (res as any )){
-        this.posts.unshift({
-          _id: data._id, 
-          id_usuario: data.id_usuario['_id'],
-          photo: data.id_usuario['photo'],
-          first_name: data.id_usuario['first_name'],
-          last_name: data.id_usuario['last_name'],
-          descripcion: data.descripcion,
-          lugar: data.lugar,
-          ubicacion: data.ubicacion,
-          like: data.like,
-          createdAt: data.createdAt,
-        })
-      }
-      console.log(this.posts)
-      this.contador = this.posts.length;
-      console.log(this.contador)
-      for(let i in this.posts){
-      this.comment.getCount(this.posts[i]._id)
-        .subscribe( result => {
-          this.posts[i].comentario = result;
-          if(this.posts[i].comentario > 0){
-            this.posts[i].show = true
-          }else{
-            this.posts[i].show = false
-          }
-        });
-      }
-    });
+    this.show_texto = true;
+    this.ngOnInit();
   }
 
   loadUsers(event?){

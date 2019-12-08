@@ -127,4 +127,8 @@ export class UsuarioService {
     return this.http.get<Usuarios>(`${ URL }/api/users`);
     
   }
+
+  getOneUser(id){
+    return this.http.get<Usuarios>(`${ URL }/api/users/oneUser/${id}`);
+  }
 }

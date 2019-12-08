@@ -20,10 +20,6 @@ const routes: Routes = [
     canLoad: [UsuarioGuard]
   },
   {
-    path: 'modal',
-    loadChildren: () => import('./pages/modal/modal.module').then( m => m.ModalPageModule)
-  },
-  {
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
@@ -34,7 +30,12 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  }
+  },
+  {
+    path: 'perfil-user/:id',
+    loadChildren: () => import('./pages/perfil-user/perfil-user.module').then( m => m.PerfilUserPageModule),
+    canLoad: [UsuarioGuard]
+  },
 ];
 
 @NgModule({
