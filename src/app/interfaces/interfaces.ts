@@ -3,6 +3,10 @@ export interface Componente{
     name: string;
     redirectTo: string;
 }
+export interface menu{
+    photo?: string;
+    nombre?: string;
+}
 
 export interface login{
     id: string;

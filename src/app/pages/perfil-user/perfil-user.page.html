@@ -12,13 +12,13 @@
         <ion-col size="8">
             <ion-row class="input-first">
                 <ion-col size="12" class="col-first"><!---->
-                    <ion-textarea class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="1" value="{{user.first_name}}" mode="ios" readonly></ion-textarea>
-                    <ion-textarea  class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="text" rows="1" value="{{user.last_name}}" mode="ios" readonly></ion-textarea>
-                    <ion-select [placeholder]="user.ocupacion" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" disabled>
+                    <ion-textarea class="text-first"  type="text" rows="1" value="{{user.first_name}}" mode="ios" readonly></ion-textarea>
+                    <ion-textarea  class="text-first"  type="text" rows="1" value="{{user.last_name}}" mode="ios" readonly></ion-textarea>
+                    <ion-select [placeholder]="user.ocupacion"  interface="popover" mode="ios" color="dark" disabled>
                            
                     </ion-select>
                     <div>
-                        <ion-select [placeholder]="user.carrera" [ngStyle]="{ 'border-bottom' : homeColor}" interface="popover" mode="ios" color="dark" disabled>
+                        <ion-select [placeholder]="user.carrera"  interface="popover" mode="ios" color="dark" disabled>
                             
                         </ion-select>
                     </div>
@@ -31,7 +31,7 @@
             <ion-row class="">
                 <ion-col size="6" class="col-second"><!---->
                     <ion-label color="dark">Celular:</ion-label>
-                    <ion-input color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="{{user.celular}}" mode="ios" readonly></ion-input>
+                    <ion-input color="dark" class="text-first" type="tel" value="{{user.celular}}" mode="ios" readonly></ion-input>
                 </ion-col>
                 <ion-col size="6">
                     <ion-label color="dark" >Cedula:</ion-label>
@@ -41,7 +41,7 @@
             <ion-row>
                 <ion-col size="6"><!---->
                     <ion-label color="dark">Fecha de nacimiento:</ion-label> <!--<ion-input color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="12 / 11 / 2019" mode="ios" [readonly]="edit"></ion-input>-->
-                    <ion-datetime color="dark" class="text-first" displayFormat="MMM DD YYYY" [ngStyle]="{ 'border-bottom' : homeColor}" value="{{user.date_nacimiento}}" mode="ios" readonly></ion-datetime>
+                    <ion-datetime color="dark" class="text-first" displayFormat="MMM DD YYYY" value="{{user.date_nacimiento}}" mode="ios" readonly></ion-datetime>
                 </ion-col>
                 <ion-col size="6">
                     <ion-label color="dark" >Edad:</ion-label>
@@ -51,11 +51,11 @@
             <ion-row>
                 <ion-col size="7"><!---->
                     <ion-label color="dark">Direccion:</ion-label> 
-                    <ion-input color="dark" class="text-first" [ngStyle]="{ 'border-bottom' : homeColor}" type="tel" value="{{user.direccion}}" mode="ios" readonly></ion-input>
+                    <ion-input color="dark" class="text-first" type="tel" value="{{user.direccion}}" mode="ios" readonly></ion-input>
                 </ion-col>
                 <ion-col size="5">
                     <ion-label class="text-first" color="dark">Genero:</ion-label>
-                    <ion-select [ngStyle]="{ 'border-bottom' : homeColor}" [placeholder]="user.genero" interface="popover" mode="ios" color="dark" disabled>
+                    <ion-select  [placeholder]="user.genero" interface="popover" mode="ios" color="dark" disabled>
                     </ion-select>
                 </ion-col>
             </ion-row>

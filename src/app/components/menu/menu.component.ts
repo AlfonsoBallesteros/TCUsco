@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, Events } from '@ionic/angular';
 import { DataService } from 'src/app/services/data.service';
 import { Observable } from 'rxjs';
-import { Componente, Usuarios } from 'src/app/interfaces/interfaces';
+import { Componente, Usuarios, menu } from 'src/app/interfaces/interfaces';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { myEnterAnimation } from '../animations/enter';
 import { myLeaveAnimation } from '../animations/leave';
@@ -23,8 +23,7 @@ export class MenuComponent implements OnInit {
   perfil: string = "https://firebasestorage.googleapis.com/v0/b/tcusco-77d95.appspot.com/o/img_perfil%2Fperfil2.jpeg?alt=media&token=526bc9ec-5416-4002-8a99-19af909615c4";
 
   componentes: Observable<Componente[]>;
-  data: object;
-
+  data: menu = {};
   constructor(private dataService: DataService, private modalCtrl: ModalController, private service: DataServiceService, private userService: UsuarioService) { 
     this.service.currentData.subscribe( data => this.data = data)
     console.log(this.data); 
