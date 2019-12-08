@@ -195,19 +195,21 @@ export class ModalPage implements OnInit {
   }
   
   ionViewDidLoad(): void{
+   if(this.pagina == 'comentario'){
     this.comentService.getComment(this.id_post)
-      .subscribe( res => {
-        for (const data of (res as any )){
-          this.comentario.unshift({
-            descripcion: data.descripcion,
-            id_usuario: data.id_usuario,
-            photo: data.id_usuario.photo,
-            first_name: data.id_usuario.first_name,
-            last_name: data.id_usuario.last_name
-          })
-        }
-        console.log(this.comentario)
-      });
+    .subscribe( res => {
+      for (const data of (res as any )){
+        this.comentario.unshift({
+          descripcion: data.descripcion,
+          id_usuario: data.id_usuario,
+          photo: data.id_usuario.photo,
+          first_name: data.id_usuario.first_name,
+          last_name: data.id_usuario.last_name
+        })
+      }
+      console.log(this.comentario)
+    });
+   }
   }
 
   ngOnDestroy(){
@@ -285,13 +287,14 @@ export class ModalPage implements OnInit {
     
   }
 
-  save_comentarios(){
+   async save_comentarios(){
     if(this.crear_comentario.valid){
-      const creado = this.comentService.postComment(this.crear_comentario.value);
+      const creado = await this.comentService.postComment(this.crear_comentario.value);
       console.log(this.crear_comentario.value)
       this.crear_comentario.reset();
-      this.ngOnDestroy();
-      this.ionViewDidLoad();
+      //this.ngOnDestroy();
+      this.refresh();
+      //this.ngOnInit();
     }
   }
 
@@ -368,6 +371,8 @@ export class ModalPage implements OnInit {
 
   refresh(){
     this.ngOnDestroy();
+    this.ngOnInit();
+    /*
     this.comentService.getComment(this.id_post)
       .subscribe( res => {
         for (const data of (res as any )){
@@ -381,7 +386,7 @@ export class ModalPage implements OnInit {
         }
         console.log(this.comentario)
       });
-
+      */
   }
 }
 

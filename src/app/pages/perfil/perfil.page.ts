@@ -34,6 +34,8 @@ export class PerfilPage implements OnInit {
   age:number;
   show_photo: boolean = false;
   new_photo: string;
+  year = null;
+  currentTime = null;
 /*
   user = {
     'photo': 'https://firebasestorage.googleapis.com/v0/b/tcusco-77d95.appspot.com/o/img_perfil%2Fperfil2.jpeg?alt=media&token=526bc9ec-5416-4002-8a99-19af909615c4',
@@ -50,7 +52,9 @@ export class PerfilPage implements OnInit {
   }*/
 
   constructor( private actioCrtl: ActionSheetController, private modalCtrl: ModalController, private toastCrtl: ToastController, private formCrtl: FormBuilder, private alertCrtl: AlertController, private usuarioService: UsuarioService, private camara: Camera) {
-
+    this.currentTime = new Date();
+    this.year = this.currentTime.getFullYear();
+    this.year = this.year - 18;
   }
 
   ngOnInit() {

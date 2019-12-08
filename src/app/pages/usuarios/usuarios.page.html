@@ -11,7 +11,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
  <ion-list lines="none"> <!--*ngIf="user.rol == usuario"-->
-   <div *ngIf="user.rol == 'admin'">
+   <div *ngIf="user.rol == 'usuario'">
     <ion-item mode="ios" class="space-item" *ngFor="let user of itemBuscar"> 
       <ion-buttons slot="start">
         <img class="big-perfil-modal" [src]="user.photo" />
@@ -32,7 +32,7 @@
     </ion-item>
   </div>
     <!--button: Admin *ngIf="user.rol == admin"-->
-    <div *ngIf="user.rol == 'usuario'">
+    <div *ngIf="user.rol == 'admin'">
     <div *ngFor="let user of itemBuscar" >
     <ion-item mode="ios" class="space-item" button>
       <ion-buttons slot="start" (click)="perfil_usuario(user)">

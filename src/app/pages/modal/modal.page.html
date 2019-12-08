@@ -199,7 +199,7 @@
   <form [formGroup]="crear_comentario">
       <ion-toolbar>
         <ion-item class="input-comment" mode="ios">
-          <ion-textarea formControlName="descripcion" class="input" rows="1" placeholder="Comenta..." mode="ios" id="comment" #comment></ion-textarea>
+          <ion-textarea autocapitalize formControlName="descripcion" class="input" rows="1" placeholder="Comenta..." mode="ios" id="comment" #comment></ion-textarea>
           <ion-buttons slot="end">
             <ion-button (click)="save_comentarios()" >
               <ion-icon class="size-icon" name="send" color="tertiary"></ion-icon>

@@ -39,10 +39,10 @@ export class LoginPage implements OnInit {
       let password = this.login_form.get('password').value;
       const valido =  await this.usuarioServices.login( codigo, password);
       if(valido){
-        this.message = 'Inicio de session exitosa';
-        this.toastLogin();
         this.router.navigate(['/inicio']);
         console.log('entra');
+        this.message = 'Inicio de session exitosa';
+        this.toastLogin();
         this.login_form.reset();
       }else{
         this.message= 'Contraseña/Usuario Incorrecto';
